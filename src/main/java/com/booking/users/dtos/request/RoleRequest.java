@@ -1,7 +1,5 @@
 package com.booking.users.dtos.request;
 
-import java.util.Set;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,5 +11,4 @@ import lombok.experimental.FieldDefaults;
 public class RoleRequest {
     String name;
     String description;
-    Set<Long> permissions;
 }

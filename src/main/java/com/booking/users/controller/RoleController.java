@@ -3,6 +3,8 @@ package com.booking.users.controller;
 import java.util.List;
 
 import com.booking.users.service.RoleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import com.booking.auth.dto.response.ApiResponse;
@@ -15,10 +17,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Tag(name = "Roles")
 @RequestMapping("/roles")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
+@Log4j2
 public class RoleController {
     RoleService roleService;
 

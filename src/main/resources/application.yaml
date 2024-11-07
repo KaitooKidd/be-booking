@@ -1,45 +1,59 @@
 server:
-  port: 8080
+  port: ${PORT}
   servlet:
-    context-path: /identity
+    context-path: ${CONTEXT_PATH}
 
 spring:
   application:
-    name: identity-service
+    name: ${APPLICATION_NAME}
   datasource:
-    url: "jdbc:mysql://localhost:3306/bookteria_identity"
-    driverClassName: "com.mysql.cj.jdbc.Driver"
-    username: root
-    password: root
+    url: ${MYSQL_URL}
+    driverClassName: ${MYSQL_DRIVER_CLASSNAME}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
   kafka:
-    bootstrap-servers: localhost:9094
     producer:
+      bootstrap-servers: ${KAFKA_SERVER}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      bootstrap-servers: ${KAFKA_SERVER}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
+      group-id: ${KAFKA_CONSUMER_GROUP_ID}
+      properties:
+        max:
+          poll:
+            interval:
+              ms: 7200000
+        allow:
+          auto:
+            create:
+              topics: false
   mail:
-    host: smtp.gmail.com
-    username: server-booking@booking.com
-    password: password
+    host: ${MAIL_HOST}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         transport:
           protocol: smtp
         smtp:
-          port: 25
+          port: ${MAIL_PORT}
           auth: true
           starttls:
             enable: true
             required: true
-jwt:
-  authSecret: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
-  valid-duration: 172800000
 
 email:
-  client-url: "url"
+  client-url: ${CLIENT_URL}
 
 firebase:
-  credential: "path/to/credential"
+  credential: ${FIREBASE_CREDENTIAL_PATH}

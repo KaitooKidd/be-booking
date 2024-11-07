@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import jakarta.validation.ConstraintViolation;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,7 +17,7 @@ import com.booking.auth.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
-@Slf4j
+@Log4j2
 public class GlobalExceptionHandler {
 
     private static final String MIN_ATTRIBUTE = "min";

@@ -7,6 +7,8 @@ import com.booking.users.entity.RoleEntity;
 import java.util.List;
 
 public interface RoleService {
+    RoleEntity save(RoleEntity roleEntity);
+
     RoleResponse create(RoleRequest request);
 
     List<RoleResponse> getAll();

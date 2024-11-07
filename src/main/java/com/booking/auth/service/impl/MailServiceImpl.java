@@ -48,9 +48,9 @@ public class MailServiceImpl implements MailService {
             helper.setTo(email);
             helper.setSubject("Verification email");
             helper.setSentDate(new Date());
-            helper.setText(content);
-            ClassPathResource classPathResource = new ClassPathResource("static/falcon-logo.png");
-            helper.addInline("imageUrl", classPathResource);
+            helper.setText(content, true);
+//            ClassPathResource classPathResource = new ClassPathResource("static/falcon-logo.png");
+//            helper.addInline("imageUrl", classPathResource);
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             throw new SendEmailFailureException(email);

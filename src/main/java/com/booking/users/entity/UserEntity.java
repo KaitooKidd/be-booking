@@ -17,8 +17,9 @@ public class UserEntity extends ABaseEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email; // email as the ID
 
-    @Column(name = "is_verified", nullable = false)
-    private boolean isVerified;
+    @Column(name = "verified", nullable = false)
+    @Builder.Default
+    private boolean verified = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)

@@ -18,7 +18,7 @@ import com.google.firebase.auth.UserRecord;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.coyote.BadRequestException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
+@Log4j2
 @SuppressWarnings("all")
 public class UserServiceImpl implements com.booking.users.service.UserService {
     UserRepository userRepository;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
 
         UserEntity user = save(UserEntity.builder()
                 .email(request.getEmail())
-                .isVerified(request.getIsVerified())
+                .verified(request.getIsVerified())
                 .role(role)
                 .build());
 

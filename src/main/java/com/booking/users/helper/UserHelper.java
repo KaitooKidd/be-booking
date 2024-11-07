@@ -44,4 +44,3 @@ public class UserHelper {
         throw new RuntimeException(message);
     }
 }
-}

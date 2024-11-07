@@ -2,13 +2,16 @@ package com.booking.auth.utils;
 
 import com.booking.auth.constant.RequestConstant;
 import com.booking.users.dtos.request.UserRequest;
+import com.nimbusds.jwt.JWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -36,18 +39,22 @@ public class JwtUtils {
     }
 
     public static String generateToken(UserRequest userRequest) {
-        Map<String, Object> claims = new HashMap<>();
-        return RequestConstant.AUTH_TOKEN_PREFIX + createToken(claims, userRequest.getEmail());
+        Map<String, Object> claims = new LinkedHashMap<>();
+        claims.put("email", userRequest.getEmail());
+        claims.put("picture", userRequest.getPicture());
+        claims.put("name", userRequest.getName());
+        return createToken(claims, userRequest.getEmail());
     }
 
     public static String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        return RequestConstant.AUTH_TOKEN_PREFIX + createToken(claims, email);
+        return createToken(claims, email);
     }
 
     private static String createToken(Map<String, Object> claims, String subject) {
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + RequestConstant.JWT_EXPIRATION))
                 .signWith(SignatureAlgorithm.HS256, RequestConstant.AUTH_SECRET).compact();
     }
