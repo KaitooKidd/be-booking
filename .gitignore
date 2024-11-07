@@ -18,6 +18,7 @@ target/
 *.iml
 *.ipr
 *.env
+key/google-services.json
 
 ### NetBeans ###
 /nbproject/private/
