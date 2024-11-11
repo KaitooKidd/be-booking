@@ -33,16 +33,17 @@ public class FirebaseRequestFilter extends OncePerRequestFilter {
         UserRequest userRequest = firebaseAuthService.authenticate(token);
 
         UserEntity userEntity = userService.getUserByEmail(userRequest.getEmail(), null);
+        List<GrantedAuthority> authorities = AuthorityUtils.NO_AUTHORITIES;
         if (userEntity != null) {
-            List<GrantedAuthority> authorities = AuthorityUtils.NO_AUTHORITIES;
             if (userEntity.getRole() != null) {
                 authorities = AuthorityUtils.createAuthorityList(userEntity.getRole().getName());
             }
 
+        }
+
             CustomAuthenticationToken customAuthenticationToken = new CustomAuthenticationToken(token, userRequest, authorities);
             SecurityContextHolder.getContext().setAuthentication(customAuthenticationToken);
             SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
-        }
         filterChain.doFilter(request, response);
     }
 }
