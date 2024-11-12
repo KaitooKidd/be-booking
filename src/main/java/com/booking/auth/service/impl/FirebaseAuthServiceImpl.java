@@ -4,11 +4,15 @@ import com.booking.auth.constant.LocaleConstant;
 import com.booking.auth.constant.RequestConstant;
 import com.booking.auth.dto.VerificationContent;
 import com.booking.auth.dto.response.ApiResponse;
+import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.AuthorizationException;
+import com.booking.auth.exception.ErrorCode;
 import com.booking.auth.service.FirebaseAuthService;
 import com.booking.auth.service.MailService;
 import com.booking.auth.utils.JwtUtils;
 import com.booking.base.utils.StringUtils;
+import com.booking.users.constant.RoleConstant;
+import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
@@ -70,14 +74,19 @@ public class FirebaseAuthServiceImpl implements FirebaseAuthService {
 
     @Override
     public ApiResponse<Void> signUp(UserRequest userRequest) {
-        UserEntity user = userService.getUserByEmail(userRequest.getEmail(), null);
-        if (user == null) {
-            String message = "User " + userRequest.getEmail() + " is not found";
-            log.error(message);
-            throw new AuthorizationException(message);
+        UserEntity existingUser = userService.getUserByEmail(userRequest.getEmail(), null);
+        if (existingUser != null) {
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
 
         // TODO: 11/5/2024 Create customer no verify
+        // TODO: Test create user Customer
+        userService.createUser(UserCreationRequest.builder()
+                .email(userRequest.getEmail())
+                .roleName(RoleConstant.CUSTOMER_ROLE)
+                .isVerified(false)
+                .shouldCreateFirebaseUser(false)
+                .build());
 
         String emailContent = generateVerificationContent(userRequest).getContent();
         sendVerificationEmail(userRequest.getEmail(), emailContent);
