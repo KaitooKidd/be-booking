@@ -1,6 +1,7 @@
 package com.booking.users.entity;
 
-import com.booking.base.entity.ABaseEntity;
+import com.booking.base.entity.TimestampEntity;
+import com.booking.customers.entity.CustomerEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,8 +14,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "users")
-public class UserEntity extends ABaseEntity {
-    @Column(name = "email", nullable = false, unique = true)
+public class UserEntity extends TimestampEntity {
+    @Id
+    @Column(nullable = false, unique = true)
     private String email; // email as the ID
 
     @Column(name = "verified", nullable = false)
@@ -25,12 +27,12 @@ public class UserEntity extends ABaseEntity {
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity role;
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private CustomerEntity customer;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CustomerEntity customer;
 //
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private HotelManagerEntity hotelManager;
 //
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private ReceptionistEntity receptionist;
 }

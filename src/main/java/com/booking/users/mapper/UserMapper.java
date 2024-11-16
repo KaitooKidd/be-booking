@@ -12,6 +12,7 @@ public interface UserMapper {
     UserEntity toUser(UserCreationRequest request);
 
     UserEntity toUserFromUserRequest(UserRequest request);
+    @Mapping(target = "role", ignore = true)
     UserResponse toUserResponse(UserEntity user);
 
 }

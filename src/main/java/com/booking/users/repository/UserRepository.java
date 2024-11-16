@@ -1,6 +1,8 @@
 package com.booking.users.repository;
 
+import com.booking.customers.entity.CustomerEntity;
 import com.booking.users.entity.UserEntity;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +24,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     void deleteByEmailIn(List<String> emails);
     Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByEmailAndVerified(String email, Boolean isVerified);
+
+    @EntityGraph(attributePaths = {"customer", "hotelManager", "receptionist"})
+    List<UserEntity> findAll();
 }

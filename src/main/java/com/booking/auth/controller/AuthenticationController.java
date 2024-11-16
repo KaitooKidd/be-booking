@@ -25,9 +25,8 @@ public class AuthenticationController {
     FirebaseAuthService firebaseAuthService;
 
     @PostMapping("/sign-in")
-    ApiResponse<UserResponse> signIn(@AuthenticationPrincipal UserRequest userRequest) {
-        var result = firebaseAuthService.signIn(userRequest);
-        return ApiResponse.<UserResponse>builder().result(result).build();
+    UserResponse signIn(@AuthenticationPrincipal UserRequest userRequest) {
+        return firebaseAuthService.signIn(userRequest);
     }
 
     @PostMapping("/sign-up")
@@ -36,9 +35,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-email")
-    ApiResponse<UserEntity> verifyEmail(@RequestBody VerifyEmailRequest verifyEmailRequest) {
-        UserEntity userEntity = firebaseAuthService.verifyEmail(verifyEmailRequest.getVerifyToken());
-        return ApiResponse.<UserEntity>builder().result(userEntity).build();
+    UserEntity verifyEmail(@RequestBody VerifyEmailRequest verifyEmailRequest) {
+        return firebaseAuthService.verifyEmail(verifyEmailRequest.getVerifyToken());
     }
 
     @PostMapping("/verify-email/resend")

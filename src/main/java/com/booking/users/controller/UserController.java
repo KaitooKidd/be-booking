@@ -25,9 +25,10 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/firebase")
-    ApiResponse<UserResponse> createFirebaseAccount(@RequestBody UserCreationRequest request) {
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.createUser(request))
+    ApiResponse<Void> createFirebaseAccount(@RequestBody UserCreationRequest request) {
+        userService.createFirebaseUser(request.getEmail(), "123456");
+        return ApiResponse.<Void>builder()
+                .message("Create firebase account success")
                 .build();
     }
 

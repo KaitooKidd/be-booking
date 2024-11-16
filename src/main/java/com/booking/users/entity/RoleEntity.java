@@ -1,7 +1,6 @@
 package com.booking.users.entity;
 
 import com.booking.base.entity.SequenceBaseEntity;
-import com.booking.users.enums.RoleTypes;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -18,7 +18,7 @@ public interface UserService {
 
     UserEntity getUserByEmail(String email, Boolean isVerified);
 
-    UserResponse createUser(UserCreationRequest request);
+    UserEntity createUser(UserCreationRequest request);
 
     void createFirebaseUser(String email, String password);
 

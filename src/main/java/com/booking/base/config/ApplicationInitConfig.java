@@ -40,7 +40,7 @@ public class ApplicationInitConfig {
             if (roleService.getAll().isEmpty()) {
                 roleService.save(RoleEntity.builder()
                         .name(RoleConstant.CUSTOMER_ROLE)
-                        .description("UserEntity role")
+                        .description("Customer role")
                         .build());
 
                 roleService.save(RoleEntity.builder()
@@ -64,7 +64,7 @@ public class ApplicationInitConfig {
                         .password(ADMIN_PASSWORD)
                         .roleName(RoleConstant.ADMIN_ROLE)
                         .isVerified(true)
-                        .shouldCreateFirebaseUser(true)
+                        .shouldCreateFirebaseUser(false)
                         .build());
 
                 log.warn("admin user has been created with default password: admin, please change it");

@@ -11,6 +11,7 @@ import com.booking.users.helper.UserHelper;
 import com.booking.users.mapper.UserMapper;
 import com.booking.users.repository.UserRepository;
 import com.booking.users.service.RoleService;
+import com.booking.users.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -30,7 +31,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Log4j2
 @SuppressWarnings("all")
-public class UserServiceImpl implements com.booking.users.service.UserService {
+public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RoleService roleService;
     UserMapper userMapper;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
     }
 
     @Override
-    public UserResponse createUser(UserCreationRequest request) {
+    public UserEntity createUser(UserCreationRequest request) {
         UserEntity existingUser = getUserByEmail(request.getEmail(), null);
         if (existingUser != null) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -69,7 +70,7 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
         if (request.getShouldCreateFirebaseUser()) {
             createFirebaseUser(request.getEmail(), request.getPassword());
         }
-        return userMapper.toUserResponse(user);
+        return user;
     }
 
     @Override
