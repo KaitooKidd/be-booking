@@ -1,25 +1,27 @@
-package com.booking.customers.entity;
+package com.booking.hotels.entity;
 
 import com.booking.address.entity.AddressEntity;
+import com.booking.base.entity.SequenceBaseEntity;
 import com.booking.base.entity.TimestampEntity;
 import com.booking.base.entity.UBaseEntity;
-import com.booking.customers.enums.GenderType;
+import com.booking.hotels.decorators.GalleryItemListConverter;
+import com.booking.hotels.dtos.GalleryItem;
 import com.booking.users.entity.UserEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "customers")
-@SuppressWarnings("all")
-public class CustomerEntity extends UBaseEntity {
+@Table(name = "hotel_managers")
+public class HotelManagerEntity extends UBaseEntity {
+
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -29,9 +31,6 @@ public class CustomerEntity extends UBaseEntity {
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-//    private List<BookingEntity> bookings;
-
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-//    private List<ReviewEntity> reviews;
+    @OneToOne(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
+    private HotelEntity hotel;
 }
