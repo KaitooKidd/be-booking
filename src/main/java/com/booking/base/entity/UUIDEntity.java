@@ -12,7 +12,7 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class ABaseEntity extends TimestampEntity {
+public abstract class UUIDEntity extends TimestampEntity {
     @Id
     private UUID id;
 

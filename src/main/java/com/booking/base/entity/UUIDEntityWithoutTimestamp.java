@@ -10,7 +10,7 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-public abstract class ABaseEntityWithoutTimestamp {
+public abstract class UUIDEntityWithoutTimestamp {
     @Id
     private UUID id; // Assume that we're using UUIDs for IDs
 }
