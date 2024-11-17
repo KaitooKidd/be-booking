@@ -2,7 +2,6 @@ package com.booking.customers.entity;
 
 import com.booking.address.entity.AddressEntity;
 import com.booking.base.entity.TimestampEntity;
-import com.booking.base.entity.UBaseEntity;
 import com.booking.customers.enums.GenderType;
 import com.booking.users.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,8 +17,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "customers")
-@SuppressWarnings("all")
-public class CustomerEntity extends UBaseEntity {
+public class CustomerEntity extends TimestampEntity {
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
+    @JsonProperty("id")
+    private String email; // email as the ID
+
+    private String name;
+    private String avatarKey;
+    private String avatar;
+    private String birthday;
+    private String phone;
+    private GenderType gender;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

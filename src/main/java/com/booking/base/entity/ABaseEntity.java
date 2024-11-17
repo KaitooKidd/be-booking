@@ -11,7 +11,7 @@ import java.util.UUID;
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class UUIDEntity extends TimestampEntity {
+public abstract class ABaseEntity extends TimestampEntity {
     @Id
     private UUID id;
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @MappedSuperclass
 @Data
-public abstract class UUIDEntityWithoutTimestamp {
+public abstract class ABaseEntityWithoutTimestamp{
     @Id
     private UUID id; // Assume that we're using UUIDs for IDs
 }
