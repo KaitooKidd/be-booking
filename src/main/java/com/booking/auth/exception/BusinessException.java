@@ -1,7 +1,8 @@
 package com.booking.auth.exception;
 
-import lombok.*;
 import org.springframework.http.HttpStatus;
+
+import lombok.*;
 
 @Getter
 @Setter

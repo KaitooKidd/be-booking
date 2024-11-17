@@ -5,8 +5,9 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class NumberUtils {
-//    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,###.####");
+    //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,###.####");
     public static final DecimalFormat TWO_POINT_DECIMAL_FORMAT = new DecimalFormat("0.00");
+
     public static String round(double number, int decimalPlace) {
         BigDecimal bd = new BigDecimal(number);
         bd = bd.setScale(decimalPlace, RoundingMode.HALF_UP);

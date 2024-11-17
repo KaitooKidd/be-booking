@@ -1,13 +1,15 @@
 package com.booking.users.helper;
 
+import org.springframework.stereotype.Component;
+
 import com.booking.base.utils.StringUtils;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -18,12 +20,16 @@ public class UserHelper {
         UserResponse userResponse = UserResponse.builder()
                 .email(userEntity.getEmail())
                 .isVerified(userEntity.isVerified())
-                .role(userEntity.getRole().getName()).build();
+                .role(userEntity.getRole().getName())
+                .build();
 
         if (userEntity.getRole().getName().equals(RoleConstant.ADMIN_ROLE)) {
             userResponse.setId(userEntity.getEmail());
             if (userRequest != null) {
-                userResponse.setName(StringUtils.isExist(userRequest.getName()) ? userRequest.getName() : StringUtils.getEmailName(userEntity.getEmail()));
+                userResponse.setName(
+                        StringUtils.isExist(userRequest.getName())
+                                ? userRequest.getName()
+                                : StringUtils.getEmailName(userEntity.getEmail()));
                 userResponse.setAvatar(userRequest.getPicture());
             }
             return userResponse;

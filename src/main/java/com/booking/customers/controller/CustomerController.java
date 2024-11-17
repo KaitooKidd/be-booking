@@ -1,23 +1,25 @@
 package com.booking.customers.controller;
 
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.request.DeleteCustomerRequest;
 import com.booking.customers.dtos.request.GetListCustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
-import com.booking.customers.entity.CustomerEntity;
+import com.booking.customers.helper.CustomerHelper;
 import com.booking.customers.service.CustomerService;
 import com.booking.users.dtos.request.UserRequest;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
@@ -30,8 +32,9 @@ public class CustomerController {
 
     @PatchMapping("")
     @PreAuthorize("hasAnyAuthority('admin','customer')")
-    CustomerEntity updateCustomer(@AuthenticationPrincipal UserRequest userRequest, @RequestBody CustomerRequest customerRequest) {
-        return customerService.updateCustomer(userRequest, customerRequest);
+    CustomerResponse updateCustomer(
+            @AuthenticationPrincipal UserRequest userRequest, @RequestBody CustomerRequest customerRequest) {
+        return CustomerHelper.toCustomerResponse(customerService.updateCustomer(userRequest, customerRequest));
     }
 
     @GetMapping("/me")
@@ -50,7 +53,6 @@ public class CustomerController {
     @PreAuthorize("hasAnyAuthority('admin')")
     ApiResponse<Void> deleteCustomer(@RequestBody DeleteCustomerRequest deleteCustomerRequest) {
         customerService.deleteCustomer(deleteCustomerRequest.getEmails());
-        return ApiResponse.<Void>builder()
-                .build();
+        return ApiResponse.<Void>builder().build();
     }
 }

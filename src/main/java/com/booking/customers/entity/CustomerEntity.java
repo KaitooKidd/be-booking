@@ -25,13 +25,13 @@ public class CustomerEntity extends UBaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToOne(cascade = CascadeType.ALL,  orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-//    private List<BookingEntity> bookings;
+    //    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    //    private List<BookingEntity> bookings;
 
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-//    private List<ReviewEntity> reviews;
+    //    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    //    private List<ReviewEntity> reviews;
 }

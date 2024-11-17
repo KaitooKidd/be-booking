@@ -1,5 +1,10 @@
 package com.booking.customers.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.base.utils.StringUtils;
@@ -15,12 +20,9 @@ import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -62,8 +64,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerResponse> getAllCustomersVerifiedWithFetch(Boolean isVerified) {
         List<CustomerEntity> customers = customerRepository.findAllByWithFetch();
-        return customers.stream().filter(c -> c.getUser().isVerified() == isVerified).map(CustomerHelper::toCustomerResponse).toList();
+        return customers.stream()
+                .filter(c -> c.getUser().isVerified() == isVerified)
+                .map(CustomerHelper::toCustomerResponse)
+                .toList();
     }
+
     @Override
     public UserEntity createUnverifiedCustomer(CustomerRequest request, Boolean shouldCreateFirebaseUser) {
         UserEntity user = userService.createUser(UserCreationRequest.builder()
@@ -73,10 +79,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .shouldCreateFirebaseUser(shouldCreateFirebaseUser)
                 .build());
 
-
         CustomerEntity customer = customerMapper.toCustomer(request);
         customer.setEmail(request.getEmail());
-        customer.setName(StringUtils.isExist(request.getName()) ? request.getName() : StringUtils.getEmailName(request.getEmail()));
+        customer.setName(
+                StringUtils.isExist(request.getName())
+                        ? request.getName()
+                        : StringUtils.getEmailName(request.getEmail()));
         customer.setUser(user);
 
         save(customer);
@@ -86,24 +94,21 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerEntity updateCustomer(UserRequest userRequest, CustomerRequest request) {
 
-        CustomerEntity customer = getCustomerByEmail(request.getEmail());
+        CustomerEntity customer = customerRepository.findByEmail(request.getEmail());
 
         if (customer == null) {
             log.error("Customer not found to update.");
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
-        if (customer.getUser().getRole().getName().equals(RoleConstant.CUSTOMER_ROLE) && !userRequest.getEmail().equals(request.getEmail())) {
+        if (customer.getUser().getRole().getName().equals(RoleConstant.CUSTOMER_ROLE)
+                && !userRequest.getEmail().equals(request.getEmail())) {
             log.error("Owner Customer can update info.");
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
 
-
-        CustomerEntity updateCustomer = customerMapper.toCustomer(request);
-        if (customer.getAddress() != null) {
-            updateCustomer.getAddress().setId(customer.getAddress().getId());
-        }
-        return save(updateCustomer);
+        customerMapper.updateCustomer(customer, request);
+        return save(customer);
     }
 
     @Override

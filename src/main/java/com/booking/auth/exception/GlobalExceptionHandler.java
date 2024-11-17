@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import jakarta.validation.ConstraintViolation;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.booking.auth.dto.response.ApiResponse;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 @ControllerAdvice
 @Log4j2

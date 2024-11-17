@@ -1,12 +1,12 @@
 package com.booking.customers.service;
 
+import java.util.List;
+
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.entity.UserEntity;
-
-import java.util.List;
 
 public interface CustomerService {
     CustomerEntity save(CustomerEntity customer);

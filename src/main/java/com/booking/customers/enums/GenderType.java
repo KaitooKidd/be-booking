@@ -10,5 +10,4 @@ public enum GenderType {
     GenderType(String name) {
         this.name = name;
     }
-
 }

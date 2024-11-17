@@ -1,10 +1,12 @@
 package com.booking.base.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 
-import java.util.UUID;
+import lombok.Data;
 
 @MappedSuperclass
 @Data

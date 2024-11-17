@@ -12,7 +12,6 @@ public class VerificationContent {
     private VerificationLinks link;
     private String content;
 
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
