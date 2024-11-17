@@ -1,13 +1,14 @@
 package com.booking.customers.repository;
 
-import com.booking.customers.entity.CustomerEntity;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.booking.customers.entity.CustomerEntity;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, String> {
     @EntityGraph(attributePaths = {"user", "address"})
@@ -18,9 +19,9 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, String
 
     @Query("SELECT u FROM CustomerEntity u LEFT JOIN FETCH u.address JOIN FETCH u.user")
     List<CustomerEntity> findAllByWithFetch();
+
     @Transactional
     @Modifying
     @Query("DELETE FROM CustomerEntity u WHERE u.email IN (:emails)")
     void deleteAllByEmails(List<String> emails);
-
 }

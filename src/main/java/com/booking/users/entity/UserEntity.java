@@ -1,8 +1,11 @@
 package com.booking.users.entity;
 
+import jakarta.persistence.*;
+
 import com.booking.base.entity.TimestampEntity;
 import com.booking.customers.entity.CustomerEntity;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -25,14 +28,15 @@ public class UserEntity extends TimestampEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
+    @JsonManagedReference
     private RoleEntity role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private CustomerEntity customer;
-//
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private HotelManagerEntity hotelManager;
-//
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private ReceptionistEntity receptionist;
+    //
+    //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    private HotelManagerEntity hotelManager;
+    //
+    //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    private ReceptionistEntity receptionist;
 }

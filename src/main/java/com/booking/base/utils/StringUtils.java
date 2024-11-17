@@ -1,11 +1,10 @@
 package com.booking.base.utils;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Objects;
 
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static String removeSpecialChar(String str) {
@@ -18,6 +17,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static String getEmailName(String email) {
         return email.split("@")[0];
     }
+
     public static String formatNumberForPlacementName(String str) {
         if (!isExist(str)) {
             return str;
@@ -45,11 +45,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         }
         return Objects.equals(u, v);
     }
+
     public static boolean compareObject(Object u, Object v) {
         return (u == null && v == null) || (u != null && u.equals(v));
     }
+
     public static boolean isExist(String s) {
         return s != null && !s.trim().isEmpty();
     }
-
 }

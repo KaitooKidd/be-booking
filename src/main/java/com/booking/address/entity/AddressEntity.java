@@ -1,8 +1,10 @@
 package com.booking.address.entity;
 
-import com.booking.base.entity.SequenceBaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+
+import com.booking.base.entity.SequenceBaseEntity;
+
 import lombok.*;
 
 @Getter

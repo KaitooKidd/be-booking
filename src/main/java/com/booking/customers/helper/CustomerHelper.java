@@ -1,8 +1,9 @@
 package com.booking.customers.helper;
 
+import org.modelmapper.ModelMapper;
+
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.entity.CustomerEntity;
-import org.modelmapper.ModelMapper;
 
 public class CustomerHelper {
     public static CustomerResponse toCustomerResponse(CustomerEntity customer) {

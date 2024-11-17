@@ -1,10 +1,12 @@
 package com.booking.address.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.booking.address.repository.AddressRepository;
 import com.booking.address.service.AddressService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

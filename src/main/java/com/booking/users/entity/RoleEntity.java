@@ -1,10 +1,13 @@
 package com.booking.users.entity;
 
-import com.booking.base.entity.SequenceBaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.Set;
+
+import jakarta.persistence.*;
+
+import com.booking.base.entity.SequenceBaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,8 +20,10 @@ import java.util.Set;
 public class RoleEntity extends SequenceBaseEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
     private String description;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<UserEntity> users;
 }

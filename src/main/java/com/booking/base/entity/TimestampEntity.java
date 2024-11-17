@@ -1,12 +1,14 @@
 package com.booking.base.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import lombok.Data;
 
 @MappedSuperclass
 @Data
