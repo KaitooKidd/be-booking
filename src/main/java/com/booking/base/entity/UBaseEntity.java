@@ -2,9 +2,7 @@ package com.booking.base.entity;
 
 import com.booking.customers.enums.GenderType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +20,7 @@ public abstract class UBaseEntity extends TimestampEntity {
     private String avatar;
     private String birthday;
     private String phone;
+
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 }
