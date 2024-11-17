@@ -1,5 +1,11 @@
 package com.booking.users.service.impl;
 
+import java.util.List;
+
+import org.apache.coyote.BadRequestException;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.users.dtos.request.UserCreationRequest;
@@ -11,26 +17,23 @@ import com.booking.users.helper.UserHelper;
 import com.booking.users.mapper.UserMapper;
 import com.booking.users.repository.UserRepository;
 import com.booking.users.service.RoleService;
+import com.booking.users.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.apache.coyote.BadRequestException;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Log4j2
 @SuppressWarnings("all")
-public class UserServiceImpl implements com.booking.users.service.UserService {
+public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RoleService roleService;
     UserMapper userMapper;
@@ -46,14 +49,16 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
     public FirebaseToken verifyToken(String tokenString) throws FirebaseAuthException {
         return FirebaseAuth.getInstance().verifyIdToken(tokenString);
     }
+
     @Override
     public UserEntity getUserByEmail(String email, Boolean isVerified) {
-        if (isVerified != null) return userRepository.findByEmailAndVerified(email, isVerified).orElse(null);
+        if (isVerified != null)
+            return userRepository.findByEmailAndVerified(email, isVerified).orElse(null);
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
-    public UserResponse createUser(UserCreationRequest request) {
+    public UserEntity createUser(UserCreationRequest request) {
         UserEntity existingUser = getUserByEmail(request.getEmail(), null);
         if (existingUser != null) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -69,17 +74,14 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
         if (request.getShouldCreateFirebaseUser()) {
             createFirebaseUser(request.getEmail(), request.getPassword());
         }
-        return userMapper.toUserResponse(user);
+        return user;
     }
 
     @Override
     public void createFirebaseUser(String email, String password) {
         try {
-            FirebaseAuth.getInstance().createUser(
-                    new UserRecord.CreateRequest()
-                            .setEmail(email)
-                            .setPassword(password)
-            );
+            FirebaseAuth.getInstance()
+                    .createUser(new UserRecord.CreateRequest().setEmail(email).setPassword(password));
             log.info("Create user {} successfully", email);
         } catch (FirebaseAuthException e) {
             String message = "Create firebase user error: " + e.getMessage();
@@ -92,16 +94,16 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
     public UserEntity verifyUser(String email) throws BadRequestException {
         UserEntity userEntity = getUserByEmail(email, null);
         if (userEntity == null) {
-            throw new RuntimeException(
-                    "Unverified user " + email + " was not created before verifying");
+            throw new RuntimeException("Unverified user " + email + " was not created before verifying");
         }
         if (userEntity.isVerified()) {
-            throw new BadRequestException("User " + email  + " has already been verified");
+            throw new BadRequestException("User " + email + " has already been verified");
         }
 
         userEntity.setVerified(true);
         return save(userEntity);
     }
+
     @Override
     public void deleteFirebaseUser(String email) {
         try {
@@ -141,12 +143,14 @@ public class UserServiceImpl implements com.booking.users.service.UserService {
     @Override
     public List<UserResponse> getListUserInfo() {
         List<UserEntity> userEntities = userRepository.findAll();
-        return userEntities.stream().map(userEntity -> userHelper.transformUserResponse(userEntity, null)).toList();
+        return userEntities.stream()
+                .map(userEntity -> userHelper.transformUserResponse(userEntity, null))
+                .toList();
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public UserResponse getUser(String id) {
-//        return userMapper.toUserResponse(
-//                userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
-//    }
+    //    @PreAuthorize("hasRole('ADMIN')")
+    //    public UserResponse getUser(String id) {
+    //        return userMapper.toUserResponse(
+    //                userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
+    //    }
 }

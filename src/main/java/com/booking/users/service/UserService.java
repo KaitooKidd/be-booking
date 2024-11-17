@@ -1,14 +1,15 @@
 package com.booking.users.service;
 
+import java.util.List;
+
+import org.apache.coyote.BadRequestException;
+
 import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import org.apache.coyote.BadRequestException;
-
-import java.util.List;
 
 @SuppressWarnings("unused")
 public interface UserService {
@@ -18,7 +19,7 @@ public interface UserService {
 
     UserEntity getUserByEmail(String email, Boolean isVerified);
 
-    UserResponse createUser(UserCreationRequest request);
+    UserEntity createUser(UserCreationRequest request);
 
     void createFirebaseUser(String email, String password);
 

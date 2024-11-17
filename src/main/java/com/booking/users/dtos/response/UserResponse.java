@@ -12,7 +12,7 @@ public class UserResponse {
     String id;
     String email;
     Boolean isVerified;
-    RoleResponse role;
+    String role;
     String name;
     String avatar;
 }

@@ -1,5 +1,9 @@
 package com.booking.base.utils;
 
+import java.io.InputStream;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -7,10 +11,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.io.InputStream;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class JsonUtils {
     public static final ObjectMapper mapper = new ObjectMapper();
@@ -73,7 +73,6 @@ public class JsonUtils {
         return null;
     }
 
-
     public static <T> T getObject(String data, Class<T> clazz) {
         try {
             return mapper.readValue(data, clazz);
@@ -83,12 +82,10 @@ public class JsonUtils {
         }
     }
 
-
     public static <T> T getObjectWithException(String data, Class<T> clazz) throws Exception {
 
         return mapper.readValue(data, clazz);
     }
-
 
     public static <T> T getObject(Map<String, Object> data, Class<T> clazz) {
         try {
@@ -137,8 +134,7 @@ public class JsonUtils {
 
     public static <T> List<T> formMapToListObject(String jsonData, Class<T> clazz) {
         try {
-            return getMap(jsonData).values()
-                    .stream()
+            return getMap(jsonData).values().stream()
                     .map(o -> mapper.convertValue(o, clazz))
                     .collect(Collectors.toList());
         } catch (Exception e) {
@@ -149,12 +145,8 @@ public class JsonUtils {
 
     public static <T> List<T> formMapToListObject(JsonNode jsonNode, Class<T> clazz) {
         try {
-            Map<String, T> map = mapper.convertValue(jsonNode, new TypeReference<>() {
-            });
-            return map.values()
-                    .stream()
-                    .map(o -> mapper.convertValue(o, clazz))
-                    .collect(Collectors.toList());
+            Map<String, T> map = mapper.convertValue(jsonNode, new TypeReference<>() {});
+            return map.values().stream().map(o -> mapper.convertValue(o, clazz)).collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -172,8 +164,7 @@ public class JsonUtils {
     }
 
     public static <T> List<T> mapJsonToList(Map<String, Object> map, Class<T> clazz) {
-        return map.keySet()
-                .stream()
+        return map.keySet().stream()
                 .map(key -> getObject(toString(map.get(key)), clazz))
                 .toList();
     }

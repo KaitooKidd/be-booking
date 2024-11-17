@@ -2,6 +2,8 @@ server:
   port: ${PORT}
   servlet:
     context-path: ${CONTEXT_PATH}
+applications:
+  env: ${PROFILE_ENV}
 
 spring:
   application:
@@ -15,6 +17,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    format_sql: true
 
   kafka:
     producer:

@@ -1,10 +1,11 @@
 package com.booking.auth.dto;
 
-import com.booking.users.dtos.request.UserRequest;
+import java.util.List;
+
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
+import com.booking.users.dtos.request.UserRequest;
 
 public class CustomAuthenticationToken extends AbstractAuthenticationToken {
     private String token;
@@ -18,7 +19,7 @@ public class CustomAuthenticationToken extends AbstractAuthenticationToken {
         super(authorities);
         this.token = token;
         this.userRequest = userRequest;
-//        setAuthenticated(true);
+        //        setAuthenticated(true);
     }
 
     @Override

@@ -1,17 +1,18 @@
 package com.booking.base.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @MappedSuperclass
 @Getter
 @Setter
-public abstract class ABaseEntity extends TimestampEntity {
+public abstract class UUIDEntity extends TimestampEntity {
     @Id
     private UUID id;
 
