@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimeRules {
-    private int timezone;
+    private int timezone = 7;
     private CheckinOut checkIn;
     private CheckinOut checkOut;
 
