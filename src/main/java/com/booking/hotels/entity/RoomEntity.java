@@ -67,6 +67,8 @@ public class RoomEntity extends SequenceBaseEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
+    @Column(name = "hotel_id")
+    private Long hotelId;
 
 //    @Expose({ groups: ['bookings'] })
 //    @OneToMany(() => BookingEntity, (booking) => booking.room)

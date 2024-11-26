@@ -1,35 +1,60 @@
 package com.booking.hotels.dtos.response;
 
-import com.booking.customers.entity.CustomerEntity;
-import com.booking.users.entity.UserEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AccessLevel;
+import com.booking.address.dto.response.AddressResponse;
+import com.booking.hotels.decorators.GalleryItemListConverter;
+import com.booking.hotels.decorators.TimeRulesConverter;
+import com.booking.hotels.dtos.GalleryItem;
+import com.booking.hotels.dtos.HotelOverview;
+import com.booking.hotels.dtos.TimeRules;
+import jakarta.persistence.Convert;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class HotelResponse extends CustomerEntity {
+@NoArgsConstructor
+@Builder
+public class HotelResponse {
+    private String email;
 
-    @JsonIgnore
-    private UserEntity user;
+    private String name;
+    private String description;
+    private String imageUrl;
+    private String imageKey;
 
-    @JsonProperty("isVerified")
-    public Boolean getIsVerified() {
-        return user != null && user.isVerified();
-    }
+    private AddressResponse address;
 
+    @Convert(converter = GalleryItemListConverter.class)
+    private List<GalleryItem> gallery = new ArrayList<>();
+
+    private boolean gym;
+    private boolean bar;
+    private boolean restaurant;
+    private boolean freeParking;
+    private boolean movieNight;
+    private boolean coffeeShop;
+    private boolean spa;
+    private boolean laundry;
+    private boolean shopping;
+    private boolean bikeRental;
+    private boolean swimmingPool;
+    private boolean allowPets;
+    private boolean allowSmoking;
+
+    @Convert(converter = TimeRulesConverter.class)
+    private TimeRules timeRules;
+
+    private HotelManagerResponse manager;
     private Date createdAt;
+    private Date updatedAt;
+    private Date deletedAt;
 
-    @JsonProperty("gender")
-    public String getGenderStringName() {
-        return getGender().name;
-    }
+    private List<RoomResponse> rooms;
+    private HotelOverview overview;
 }

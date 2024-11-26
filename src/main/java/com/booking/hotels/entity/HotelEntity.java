@@ -80,7 +80,6 @@ public class HotelEntity extends SequenceBaseEntity {
 //
 //    @OneToMany(() => ReceptionistEntity, (receptionist) => receptionist.hotel)
 //    receptionists: ReceptionistEntity[];
-
     public HotelOverview getOverview() {
         Double minPrice = null;
         if (rooms != null) {
