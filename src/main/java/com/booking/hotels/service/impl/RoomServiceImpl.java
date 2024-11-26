@@ -51,6 +51,7 @@ public class RoomServiceImpl implements RoomService {
 
         RoomEntity roomEntity = new RoomEntity();
         roomMapper.updateRoomEntity(roomEntity, request);
+        roomEntity.setHotel(hotel);
         roomEntity.setHotelId(hotelId);
         return roomRepository.save(roomEntity);
     }

@@ -39,10 +39,10 @@ public class RoomEntity extends SequenceBaseEntity {
     @Column(name = "queen_bed")
     private int queenBed;
 
-    @Column(name = "breakfast_price", precision = 14, scale = 2)
+    @Column(name = "breakfast_price")
     private Double breakFastPrice;
 
-    @Column(name = "room_price", precision = 14, scale = 2)
+    @Column(name = "room_price")
     private Double roomPrice;
 
     @Column(name = "room_service")
@@ -67,7 +67,7 @@ public class RoomEntity extends SequenceBaseEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id")
     private HotelEntity hotel;
-    @Column(name = "hotel_id")
+    @Column(name = "hotel_id_xx") //để tạm như này đã vì chưa nghĩ ra cách làm
     private Long hotelId;
 
 //    @Expose({ groups: ['bookings'] })

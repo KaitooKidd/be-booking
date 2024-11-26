@@ -27,7 +27,7 @@ public class HotelEntity extends SequenceBaseEntity {
     @JoinColumn(name = "manager_email")
     private HotelManagerEntity manager;
 
-    @Column(name = "manager_email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     private String name;
