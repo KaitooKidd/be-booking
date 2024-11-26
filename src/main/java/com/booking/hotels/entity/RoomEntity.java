@@ -81,10 +81,10 @@ public class RoomEntity extends SequenceBaseEntity {
     private boolean soundProofed;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id", insertable = false, updatable = false)
     private HotelEntity hotel;
 
-    @Column(name = "hotel_id_xx") //để tạm như này đã vì chưa nghĩ ra cách làm
+    @Column(name = "hotel_id")
     private Long hotelId;
 
     //    @Expose({ groups: ['bookings'] })

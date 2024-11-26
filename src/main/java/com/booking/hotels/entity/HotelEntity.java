@@ -26,10 +26,10 @@ import lombok.*;
 public class HotelEntity extends SequenceBaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_email")
+    @JoinColumn(name = "manager_email",referencedColumnName = "id", insertable = false, updatable = false)
     private HotelManagerEntity manager;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "manager_email", unique = true)
     private String email;
 
     private String name;
