@@ -1,17 +1,16 @@
 package com.booking.hotels.dtos.request;
 
-import com.booking.base.entity.SequenceBaseEntity;
-import com.booking.hotels.decorators.GalleryItemListConverter;
-import com.booking.hotels.dtos.GalleryItem;
-import com.booking.hotels.entity.HotelEntity;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
-import org.hibernate.validator.constraints.URL;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.URL;
+
+import com.booking.hotels.dtos.GalleryItem;
+
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
@@ -21,11 +20,14 @@ import java.util.List;
 public class RoomRequest {
     @NotEmpty
     private String title;
+
     @NotEmpty
     private String description;
+
     @NotEmpty
     @URL
     private String imageUrl;
+
     @NotEmpty
     private String imageKey;
 
@@ -50,5 +52,4 @@ public class RoomRequest {
     private boolean mountainView;
     private boolean airCondition;
     private boolean soundProofed;
-
 }

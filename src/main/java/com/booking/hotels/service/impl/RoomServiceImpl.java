@@ -1,5 +1,10 @@
 package com.booking.hotels.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.hotels.dtos.request.RoomRequest;
@@ -14,12 +19,9 @@ import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -38,6 +40,7 @@ public class RoomServiceImpl implements RoomService {
         }
         return roomEntity.get();
     }
+
     @Override
     public RoomEntity createRoom(Long hotelId, UserRequest userRequest, RoomRequest request) {
         HotelEntity hotel = hotelService.getHotelById(hotelId);

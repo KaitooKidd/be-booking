@@ -1,12 +1,11 @@
 package com.booking.customers.entity;
 
-import com.booking.address.entity.AddressEntity;
-import com.booking.base.entity.TimestampEntity;
-import com.booking.base.entity.UBaseEntity;
-import com.booking.customers.enums.GenderType;
-import com.booking.users.entity.UserEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import com.booking.address.entity.AddressEntity;
+import com.booking.base.entity.UBaseEntity;
+import com.booking.users.entity.UserEntity;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

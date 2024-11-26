@@ -1,12 +1,14 @@
 package com.booking.hotels.dtos.response;
 
-import com.booking.hotels.decorators.GalleryItemListConverter;
-import com.booking.hotels.dtos.GalleryItem;
-import jakarta.persistence.Convert;
-import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.Convert;
+
+import com.booking.hotels.decorators.GalleryItemListConverter;
+import com.booking.hotels.dtos.GalleryItem;
+
+import lombok.*;
 
 @Getter
 @Setter
@@ -39,6 +41,4 @@ public class RoomResponse {
     private boolean mountainView;
     private boolean airCondition;
     private boolean soundProofed;
-
-
 }

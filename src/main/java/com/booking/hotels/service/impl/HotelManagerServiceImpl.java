@@ -1,5 +1,7 @@
 package com.booking.hotels.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.hotels.dtos.request.HotelManagerRequest;
@@ -10,10 +12,9 @@ import com.booking.hotels.repository.HotelManagerRepository;
 import com.booking.hotels.service.HotelManagerService;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
-import com.booking.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class HotelManagerServiceImpl implements HotelManagerService {
     private final HotelManagerRepository hotelManagerRepository;
     private final HotelManagerMapper hotelManagerMapper;
+
     @Override
     public HotelManagerResponse getHotelManagerByEmail(String email) {
         HotelManagerEntity hotelManager = hotelManagerRepository.findByEmail(email);
@@ -32,7 +34,8 @@ public class HotelManagerServiceImpl implements HotelManagerService {
 
     @Override
     public HotelManagerResponse updateHotelManager(UserRequest userRequest, HotelManagerRequest request) {
-        HotelManagerEntity hotelManager = hotelManagerRepository.findById(request.getEmail()).orElse(null);
+        HotelManagerEntity hotelManager =
+                hotelManagerRepository.findById(request.getEmail()).orElse(null);
         if (hotelManager == null) {
             throw new AppException("Update fail: Hotel manager not found", ErrorCode.USER_NOT_EXISTED);
         }

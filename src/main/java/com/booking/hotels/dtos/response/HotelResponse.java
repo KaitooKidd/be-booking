@@ -1,20 +1,22 @@
 package com.booking.hotels.dtos.response;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import jakarta.persistence.Convert;
+
 import com.booking.address.dto.response.AddressResponse;
 import com.booking.hotels.decorators.GalleryItemListConverter;
 import com.booking.hotels.decorators.TimeRulesConverter;
 import com.booking.hotels.dtos.GalleryItem;
 import com.booking.hotels.dtos.HotelOverview;
 import com.booking.hotels.dtos.TimeRules;
-import jakarta.persistence.Convert;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

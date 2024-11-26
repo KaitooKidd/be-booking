@@ -1,8 +1,10 @@
 package com.booking.base.entity;
 
+import jakarta.persistence.*;
+
 import com.booking.customers.enums.GenderType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,7 @@
 package com.booking.hotels.dtos.request;
 
 import com.booking.base.dtos.ProfileDTO;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

@@ -1,39 +1,38 @@
 package com.booking.hotels.dtos.request;
 
-import com.booking.address.dto.request.AddressRequest;
-import com.booking.address.entity.AddressEntity;
-import com.booking.base.entity.SequenceBaseEntity;
-import com.booking.hotels.decorators.GalleryItemListConverter;
-import com.booking.hotels.decorators.TimeRulesConverter;
-import com.booking.hotels.dtos.GalleryItem;
-import com.booking.hotels.dtos.HotelOverview;
-import com.booking.hotels.dtos.TimeRules;
-import com.booking.hotels.entity.HotelManagerEntity;
-import com.booking.hotels.entity.RoomEntity;
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+
 import org.hibernate.validator.constraints.URL;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.booking.address.dto.request.AddressRequest;
+import com.booking.hotels.dtos.GalleryItem;
+import com.booking.hotels.dtos.TimeRules;
+
+import lombok.*;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelRequest{
+public class HotelRequest {
     @Email
     @NotBlank
     private String email;
+
     @NotBlank
     private String name;
+
     @NotBlank
     private String description;
+
     @URL
     private String imageUrl;
+
     private String imageKey;
 
     private List<GalleryItem> gallery = new ArrayList<>();
@@ -54,6 +53,4 @@ public class HotelRequest{
     private boolean allowSmoking;
 
     private TimeRules timeRules;
-
-
 }

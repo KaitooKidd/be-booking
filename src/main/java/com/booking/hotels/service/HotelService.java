@@ -1,11 +1,11 @@
 package com.booking.hotels.service;
 
+import java.util.List;
+
 import com.booking.hotels.dtos.request.HotelRequest;
 import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.hotels.entity.HotelEntity;
 import com.booking.users.dtos.request.UserRequest;
-
-import java.util.List;
 
 @SuppressWarnings("unused")
 public interface HotelService {

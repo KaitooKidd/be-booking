@@ -1,5 +1,9 @@
 package com.booking.hotels.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.base.utils.StringUtils;
@@ -15,11 +19,9 @@ import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -28,6 +30,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final UserService userService;
     private final HotelMapper hotelMapper;
+
     @Override
     public List<HotelResponse> findAll() {
         List<HotelEntity> all = hotelRepository.findAll();
@@ -97,7 +100,8 @@ public class HotelServiceImpl implements HotelService {
 
         UserEntity user = userService.getUserByEmail(userRequest.getEmail(), null);
         if (user.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
-                && (!userRequest.getEmail().equals(request.getEmail()) || !userRequest.getEmail().equals(currentHotel.getEmail()))) {
+                && (!userRequest.getEmail().equals(request.getEmail())
+                        || !userRequest.getEmail().equals(currentHotel.getEmail()))) {
             log.error("Owner Hotel can update info.");
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }

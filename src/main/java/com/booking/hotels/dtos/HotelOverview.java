@@ -1,9 +1,10 @@
 package com.booking.hotels.dtos;
 
+import org.bson.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.Document;
 
 @Data
 @AllArgsConstructor

@@ -1,9 +1,9 @@
 package com.booking.address.dto.response;
 
+import java.util.Date;
+
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @Builder

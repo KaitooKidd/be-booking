@@ -1,9 +1,11 @@
 package com.booking.hotels.dtos.response;
 
-import com.booking.customers.enums.GenderType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
+import com.booking.customers.enums.GenderType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

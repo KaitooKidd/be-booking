@@ -1,13 +1,13 @@
 package com.booking.hotels.decorators;
 
+import java.util.List;
+
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import com.booking.hotels.dtos.GalleryItem;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
-
-import java.util.List;
 
 @Converter
 public class GalleryItemListConverter implements AttributeConverter<List<GalleryItem>, String> {
@@ -32,4 +32,3 @@ public class GalleryItemListConverter implements AttributeConverter<List<Gallery
         }
     }
 }
-
