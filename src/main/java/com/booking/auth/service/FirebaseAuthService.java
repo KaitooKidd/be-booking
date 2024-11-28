@@ -14,7 +14,7 @@ public interface FirebaseAuthService {
 
     ApiResponse<Void> signUp(UserRequest userRequest);
 
-    UserEntity verifyEmail(String token);
+    UserResponse verifyEmail(String token);
 
     VerificationContent generateVerificationContent(UserRequest userRequest);
 

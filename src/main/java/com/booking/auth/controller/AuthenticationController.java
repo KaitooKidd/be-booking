@@ -35,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-email")
-    UserEntity verifyEmail(@AuthenticationPrincipal UserRequest userRequest) {
+    UserResponse verifyEmail(@AuthenticationPrincipal UserRequest userRequest) {
         return firebaseAuthService.verifyEmail(userRequest.getEmail());
     }
 

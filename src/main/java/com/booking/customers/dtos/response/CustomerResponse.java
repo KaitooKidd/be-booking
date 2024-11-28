@@ -28,6 +28,6 @@ public class CustomerResponse extends CustomerEntity {
 
     @JsonProperty("gender")
     public String getGenderStringName() {
-        return getGender().name;
+        return getGender() == null ? "" : getGender().name;
     }
 }

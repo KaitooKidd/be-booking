@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity verifyUser(String email) throws BadRequestException {
+    public UserResponse verifyUser(String email) throws BadRequestException {
         UserEntity userEntity = getUserByEmail(email, null);
         if (userEntity == null) {
             throw new RuntimeException("Unverified user " + email + " was not created before verifying");
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         }
 
         userEntity.setVerified(true);
-        return save(userEntity);
+        return userMapper.toUserResponse(save(userEntity));
     }
 
     @Override

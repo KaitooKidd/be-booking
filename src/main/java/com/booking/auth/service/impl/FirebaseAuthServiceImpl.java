@@ -97,7 +97,7 @@ public class FirebaseAuthServiceImpl implements FirebaseAuthService {
     }
 
     @Override
-    public UserEntity verifyEmail(String email) {
+    public UserResponse verifyEmail(String email) {
         try {
             //            String username = JwtUtils.extractUsername(token);
             return userService.verifyUser(email);
