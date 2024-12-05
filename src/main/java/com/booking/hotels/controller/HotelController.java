@@ -68,13 +68,13 @@ public class HotelController {
     HotelResponse updateHotel(
             @AuthenticationPrincipal UserRequest userRequest,
             @RequestBody HotelRequest hotelRequest,
-            @PathVariable("id") Long id) {
-        return hotelService.updateHotel(id, userRequest, hotelRequest);
+            @PathVariable("id") String id) {
+        return hotelService.updateHotel(Long.valueOf(id), userRequest, hotelRequest);
     }
 
     @GetMapping("/{id}")
-    HotelResponse getHotel(@PathVariable("id") Long id) {
-        return hotelMapper.toHotelResponse(hotelService.getHotelById(id));
+    HotelResponse getHotel(@PathVariable("id") String id) {
+        return hotelMapper.toHotelResponse(hotelService.getHotelById(Long.valueOf(id)));
     }
 
     @GetMapping("")
@@ -87,21 +87,21 @@ public class HotelController {
     RoomResponse createRoom(
             @AuthenticationPrincipal UserRequest userRequest,
             @RequestBody RoomRequest request,
-            @PathVariable("id") Long id) {
-        return roomMapper.toRoomResponse(roomService.createRoom(id, userRequest, request));
+            @PathVariable("id") String id) {
+        return roomMapper.toRoomResponse(roomService.createRoom(Long.valueOf(id), userRequest, request));
     }
 
     @PatchMapping("/{id}/rooms/{roomId}")
     @PreAuthorize("hasAnyAuthority('admin','hotel_manager')")
     RoomResponse updateRoom(
-            @RequestBody RoomRequest request, @PathVariable("roomId") Long roomId, @PathVariable Long id) {
-        return roomMapper.toRoomResponse(roomService.updateRoom(roomId, request));
+            @RequestBody RoomRequest request, @PathVariable("roomId") String roomId, @PathVariable String id) {
+        return roomMapper.toRoomResponse(roomService.updateRoom(Long.valueOf(roomId), request));
     }
 
     @DeleteMapping("/{id}/rooms/{roomId}")
     @PreAuthorize("hasAnyAuthority('admin', 'hotel_manager')")
-    ApiResponse<Void> deleteRoom(@PathVariable Long id, @PathVariable Long roomId) {
-        roomService.deleteRoom(roomId);
+    ApiResponse<Void> deleteRoom(@PathVariable String id, @PathVariable String roomId) {
+        roomService.deleteRoom(Long.valueOf(roomId));
         return ApiResponse.<Void>builder().build();
     }
 }

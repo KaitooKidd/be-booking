@@ -16,6 +16,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomResponse {
+    private Long id;
     private String title;
     private String description;
     private String imageUrl;

@@ -4,7 +4,6 @@ import com.booking.auth.dto.VerificationContent;
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
-import com.booking.users.entity.UserEntity;
 
 @SuppressWarnings("unused")
 public interface FirebaseAuthService {

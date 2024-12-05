@@ -80,9 +80,10 @@ public class RoomEntity extends SequenceBaseEntity {
     @Column(name = "sound_proofed")
     private boolean soundProofed;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", referencedColumnName = "id", insertable = false, updatable = false)
     private HotelEntity hotel;
+
 
     @Column(name = "hotel_id")
     private Long hotelId;

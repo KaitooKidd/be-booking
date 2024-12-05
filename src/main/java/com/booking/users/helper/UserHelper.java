@@ -41,7 +41,10 @@ public class UserHelper {
             return userResponse;
         }
         if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)) {
-            // TODO: 11/5/2024 Set Hotel Manager info
+            userResponse.setId(userEntity.getHotelManager().getEmail());
+            userResponse.setName(userEntity.getHotelManager().getName());
+            userResponse.setAvatar(userEntity.getHotelManager().getAvatar());
+            return userResponse;
         }
         if (userEntity.getRole().getName().equals(RoleConstant.RECEPTIONIST_ROLE)) {
             // TODO: 11/5/2024 Set Receptionist info

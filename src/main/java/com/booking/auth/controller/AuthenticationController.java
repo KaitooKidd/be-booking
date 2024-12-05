@@ -9,7 +9,6 @@ import com.booking.auth.dto.response.ApiResponse;
 import com.booking.auth.service.FirebaseAuthService;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
-import com.booking.users.entity.UserEntity;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;

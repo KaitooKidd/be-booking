@@ -65,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerResponse> getAllCustomersVerifiedWithFetch(Boolean isVerified) {
         List<CustomerEntity> customers = customerRepository.findAllByWithFetch();
         return customers.stream()
-                .filter(c -> c.getUser().isVerified() == isVerified)
+                .filter(c -> isVerified == null || c.getUser().isVerified() == isVerified)
                 .map(CustomerHelper::toCustomerResponse)
                 .toList();
     }

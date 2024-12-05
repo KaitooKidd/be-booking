@@ -26,7 +26,7 @@ import lombok.*;
 public class HotelEntity extends SequenceBaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_email",referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "manager_email", referencedColumnName = "id", insertable = false, updatable = false)
     private HotelManagerEntity manager;
 
     @Column(name = "manager_email", unique = true)
@@ -94,16 +94,18 @@ public class HotelEntity extends SequenceBaseEntity {
     //    receptionists: ReceptionistEntity[];
     public HotelOverview getOverview() {
         Double minPrice = null;
-        if (rooms != null) {
+        HotelOverview hotelOverview = new HotelOverview();
+        hotelOverview.setRooms(0, 0.0);
+        hotelOverview.setReviews(0, 0);
+        if (rooms != null && rooms.size() > 0) {
             minPrice = Double.MAX_VALUE;
             for (RoomEntity room : rooms) {
                 if (room.getRoomPrice() < minPrice) {
                     minPrice = room.getRoomPrice();
                 }
             }
+            hotelOverview.setRooms(rooms.size(), minPrice);
         }
-        HotelOverview hotelOverview = new HotelOverview();
-        hotelOverview.setRooms(rooms.size(), minPrice);
 
         // TODO: 11/16/2024 Set review to HotelOverview
         return hotelOverview;

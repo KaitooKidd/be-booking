@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class HotelResponse {
+    private Long id;
     private String email;
 
     private String name;

@@ -14,6 +14,16 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return "";
     }
 
+    public static String generatePassword() {
+        var characters = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ-@#$%.[]{}()=*^></?:;!~";
+        StringBuilder generatePassword = new StringBuilder();
+        for (var j = 0; j < 20; j++) {
+            generatePassword.append(characters.charAt((int) Math.floor(Math.random() * characters.length())));
+        }
+        System.out.println(generatePassword);
+        return generatePassword.toString();
+    }
+
     public static String getEmailName(String email) {
         return email.split("@")[0];
     }

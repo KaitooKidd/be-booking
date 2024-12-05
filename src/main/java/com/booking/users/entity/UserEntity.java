@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import com.booking.base.entity.TimestampEntity;
 import com.booking.customers.entity.CustomerEntity;
+import com.booking.hotels.entity.HotelManagerEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.*;
@@ -33,9 +34,9 @@ public class UserEntity extends TimestampEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private CustomerEntity customer;
-    //
-    //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    private HotelManagerEntity hotelManager;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private HotelManagerEntity hotelManager;
     //
     //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     //    private ReceptionistEntity receptionist;

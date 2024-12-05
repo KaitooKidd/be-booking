@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.request.DeleteCustomerRequest;
-import com.booking.customers.dtos.request.GetListCustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.helper.CustomerHelper;
 import com.booking.customers.service.CustomerService;
@@ -45,8 +44,8 @@ public class CustomerController {
 
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('admin')")
-    List<CustomerResponse> listCustomers(@RequestBody GetListCustomerRequest listCustomerRequest) {
-        return customerService.getAllCustomersVerifiedWithFetch(listCustomerRequest.isVerified());
+    List<CustomerResponse> listCustomers(@RequestParam(required = false) Boolean isVerified) {
+        return customerService.getAllCustomersVerifiedWithFetch(isVerified);
     }
 
     @DeleteMapping("")
