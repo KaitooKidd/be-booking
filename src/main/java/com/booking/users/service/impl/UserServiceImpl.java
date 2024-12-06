@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
+import com.booking.auth.service.MailService;
+import com.booking.base.utils.StringUtils;
 import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     RoleService roleService;
     UserMapper userMapper;
     UserHelper userHelper;
+    MailService mailService;
     KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
@@ -80,8 +83,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createFirebaseUser(String email, String password) {
         try {
+            if (!StringUtils.isExist(password)) {
+                password = StringUtils.generatePassword();
+                System.out.println("default password " + password);
+            }
             FirebaseAuth.getInstance()
                     .createUser(new UserRecord.CreateRequest().setEmail(email).setPassword(password));
+            mailService.sendVerificationEmail(email, "Your password is " + password);
             log.info("Create user {} successfully", email);
         } catch (FirebaseAuthException e) {
             String message = "Create firebase user error: " + e.getMessage();
@@ -91,7 +99,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity verifyUser(String email) throws BadRequestException {
+    public UserResponse verifyUser(String email) throws BadRequestException {
         UserEntity userEntity = getUserByEmail(email, null);
         if (userEntity == null) {
             throw new RuntimeException("Unverified user " + email + " was not created before verifying");
@@ -101,7 +109,7 @@ public class UserServiceImpl implements UserService {
         }
 
         userEntity.setVerified(true);
-        return save(userEntity);
+        return userMapper.toUserResponse(save(userEntity));
     }
 
     @Override

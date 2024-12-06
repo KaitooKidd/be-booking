@@ -1,16 +1,10 @@
 package com.booking.hotels.decorators;
 
-
-import com.booking.base.utils.JsonUtils;
-import com.booking.hotels.dtos.GalleryItem;
-import com.booking.hotels.dtos.TimeRules;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-import java.sql.Time;
-import java.util.List;
+import com.booking.base.utils.JsonUtils;
+import com.booking.hotels.dtos.TimeRules;
 
 @Converter
 public class TimeRulesConverter implements AttributeConverter<TimeRules, String> {
@@ -32,4 +26,3 @@ public class TimeRulesConverter implements AttributeConverter<TimeRules, String>
         }
     }
 }
-

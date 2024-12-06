@@ -23,7 +23,7 @@ public interface UserService {
 
     void createFirebaseUser(String email, String password);
 
-    UserEntity verifyUser(String email) throws BadRequestException;
+    UserResponse verifyUser(String email) throws BadRequestException;
 
     void deleteFirebaseUser(String email);
 
