@@ -3,6 +3,7 @@ package com.booking.hotels.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.booking.receptionists.entity.ReceptionistEntity;
 import jakarta.persistence.*;
 
 import com.booking.address.entity.AddressEntity;
@@ -47,6 +48,8 @@ public class HotelEntity extends SequenceBaseEntity {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RoomEntity> rooms;
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReceptionistEntity> receptionists;
 
     @Convert(converter = GalleryItemListConverter.class)
     private List<GalleryItem> gallery = new ArrayList<>();
@@ -89,9 +92,6 @@ public class HotelEntity extends SequenceBaseEntity {
     //    @Expose({ groups: ['reviews'] })
     //    @OneToMany(() => ReviewEntity, (review) => review.hotel)
     //    reviews: ReviewEntity[];
-    //
-    //    @OneToMany(() => ReceptionistEntity, (receptionist) => receptionist.hotel)
-    //    receptionists: ReceptionistEntity[];
     public HotelOverview getOverview() {
         Double minPrice = null;
         HotelOverview hotelOverview = new HotelOverview();

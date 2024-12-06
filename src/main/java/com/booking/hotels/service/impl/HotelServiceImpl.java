@@ -2,6 +2,8 @@ package com.booking.hotels.service.impl;
 
 import java.util.List;
 
+import com.booking.receptionists.entity.ReceptionistEntity;
+import com.booking.receptionists.service.ReceptionistService;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -29,6 +31,7 @@ import lombok.extern.log4j.Log4j2;
 public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final UserService userService;
+    private final ReceptionistService receptionistService;
     private final HotelMapper hotelMapper;
 
     @Override
@@ -72,8 +75,8 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public HotelEntity getReceptionistHotel(String receptionistEmail) {
-        // TODO: 11/21/2024 Find by receptionist email
-        return null;
+        ReceptionistEntity receptionist = receptionistService.getReceptionistByEmail(receptionistEmail);
+        return getHotelById(receptionist.getHotelId());
     }
 
     @Override

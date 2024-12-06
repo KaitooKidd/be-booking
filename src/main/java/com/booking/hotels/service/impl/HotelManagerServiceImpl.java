@@ -1,5 +1,7 @@
 package com.booking.hotels.service.impl;
 
+import com.booking.users.dtos.response.UserResponse;
+import com.booking.users.service.UserService;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -22,6 +24,7 @@ import lombok.extern.log4j.Log4j2;
 public class HotelManagerServiceImpl implements HotelManagerService {
     private final HotelManagerRepository hotelManagerRepository;
     private final HotelManagerMapper hotelManagerMapper;
+    private final UserService userService;
 
     @Override
     public HotelManagerResponse getHotelManagerByEmail(String email) {
@@ -40,7 +43,8 @@ public class HotelManagerServiceImpl implements HotelManagerService {
             throw new AppException("Update fail: Hotel manager not found", ErrorCode.USER_NOT_EXISTED);
         }
 
-        if (hotelManager.getUser().getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
+        UserResponse userResponse = userService.getUserInfo(userRequest, null);
+        if (userResponse.getRole().equals(RoleConstant.HOTEL_MANAGER_ROLE)
                 && !userRequest.getEmail().equals(request.getEmail())) {
             log.error("Owner Hotel Manager can update info.");
             throw new AppException(ErrorCode.UNAUTHORIZED);

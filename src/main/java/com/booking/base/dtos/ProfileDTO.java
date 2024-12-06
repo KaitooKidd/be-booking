@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import com.booking.address.dto.request.AddressRequest;
-import com.booking.customers.enums.GenderType;
+import com.booking.base.enums.GenderType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

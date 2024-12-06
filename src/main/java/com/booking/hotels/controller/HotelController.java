@@ -47,18 +47,19 @@ public class HotelController {
     }
 
     @GetMapping("/manager/me")
-    @PreAuthorize("hasAnyAuthority('admin','hotel_manager')")
+    @PreAuthorize("hasAnyAuthority('hotel_manager')")
     HotelManagerResponse getHotelManager(@AuthenticationPrincipal UserRequest userRequest) {
         return hotelManagerService.getHotelManagerByEmail(userRequest.getEmail());
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('admin')")
     HotelResponse createHotel(@RequestBody HotelRequest hotelRequest) {
         return hotelService.createHotel(hotelRequest);
     }
 
     @GetMapping("/me")
-    //    @PreAuthorize("hasAnyAuthority('admin','hotel_manager')")
+    @PreAuthorize("hasAnyAuthority('hotel_manager')")
     HotelResponse getCurrentHotel(@AuthenticationPrincipal UserRequest userRequest) {
         return hotelService.getMyHotel(userRequest);
     }
