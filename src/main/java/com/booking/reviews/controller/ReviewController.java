@@ -1,19 +1,21 @@
 package com.booking.reviews.controller;
 
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
 import com.booking.reviews.dtos.request.ReviewRequest;
 import com.booking.reviews.dtos.response.ReviewResponse;
 import com.booking.reviews.service.ReviewService;
 import com.booking.users.dtos.request.UserRequest;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/reviews")
@@ -28,7 +30,8 @@ public class ReviewController {
     @PreAuthorize("hasAnyAuthority('admin','customer')")
     ReviewResponse updateReview(
             @PathVariable("id") String id,
-            @AuthenticationPrincipal UserRequest userRequest, @RequestBody ReviewRequest reviewRequest) {
+            @AuthenticationPrincipal UserRequest userRequest,
+            @RequestBody ReviewRequest reviewRequest) {
         return reviewService.updateReview(id, reviewRequest, userRequest);
     }
 

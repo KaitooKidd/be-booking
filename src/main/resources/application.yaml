@@ -5,6 +5,12 @@ server:
 applications:
   env: ${PROFILE_ENV}
 
+#logging:
+#  level:
+#    org.springframework: DEBUG
+#    org.hibernate: DEBUG
+#    com.booking: DEBUG
+
 spring:
   application:
     name: ${APPLICATION_NAME}
@@ -23,12 +29,12 @@ spring:
     producer:
       bootstrap-servers: ${KAFKA_SERVER}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
     consumer:
       bootstrap-servers: ${KAFKA_SERVER}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       auto-offset-reset: latest
       group-id: ${KAFKA_CONSUMER_GROUP_ID}
       properties:
@@ -39,7 +45,7 @@ spring:
         allow:
           auto:
             create:
-              topics: false
+              topics: true
   mail:
     host: ${MAIL_HOST}
     username: ${MAIL_USERNAME}

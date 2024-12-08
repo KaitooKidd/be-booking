@@ -1,11 +1,11 @@
 package com.booking.reviews.service;
 
+import java.util.List;
+
 import com.booking.reviews.dtos.request.ReviewRequest;
 import com.booking.reviews.dtos.response.ReviewResponse;
 import com.booking.reviews.entity.ReviewEntity;
 import com.booking.users.dtos.request.UserRequest;
-
-import java.util.List;
 
 @SuppressWarnings("unused")
 public interface ReviewService {

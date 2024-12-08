@@ -1,12 +1,13 @@
 package com.booking.reviews.repository;
 
-import com.booking.reviews.entity.ReviewEntity;
+import java.util.List;
+import java.util.Optional;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-import java.util.Optional;
+import com.booking.reviews.entity.ReviewEntity;
 
 public interface ReviewRepository extends JpaRepository<ReviewEntity, String> {
     @NotNull
@@ -24,5 +25,4 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, String> {
 
     @EntityGraph(attributePaths = {"hotel", "room", "customer"})
     List<ReviewEntity> findAllByCustomerEmail(String customerEmail);
-
 }

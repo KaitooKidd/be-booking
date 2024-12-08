@@ -1,20 +1,21 @@
 package com.booking.receptionists.dtos.response;
 
+import java.util.Date;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 import com.booking.address.dto.response.AddressResponse;
 import com.booking.base.enums.GenderType;
-import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.users.dtos.response.UserResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,7 @@ public class ReceptionistResponse {
     private String avatar;
     private String birthday;
     private String phone;
+    private Long hotelId;
 
     @Enumerated(EnumType.STRING)
     @JsonIgnore
@@ -41,14 +43,13 @@ public class ReceptionistResponse {
 
     @JsonIgnore
     private UserResponse user;
+
     private AddressResponse address;
 
     @JsonProperty("isVerified")
     public Boolean getIsVerified() {
-        return user != null && user.getIsVerified();
+        return user != null && user.getVerified();
     }
 
     private Date createdAt;
-
-
 }

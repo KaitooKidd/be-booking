@@ -1,8 +1,8 @@
 package com.booking.favorites.service;
 
-import com.booking.hotels.dtos.response.HotelResponse;
-
 import java.util.List;
+
+import com.booking.hotels.dtos.response.HotelResponse;
 
 public interface FavoriteService {
     List<HotelResponse> getListOfHotelsByCustomer(String customerId);

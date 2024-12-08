@@ -1,10 +1,10 @@
 package com.booking.receptionists.entity;
 
-import com.booking.hotels.entity.HotelEntity;
 import jakarta.persistence.*;
 
 import com.booking.address.entity.AddressEntity;
 import com.booking.base.entity.UBaseEntity;
+import com.booking.hotels.entity.HotelEntity;
 import com.booking.users.entity.UserEntity;
 
 import lombok.*;

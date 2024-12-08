@@ -2,14 +2,12 @@ package com.booking.base.entity;
 
 import java.util.UUID;
 
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-
 import jakarta.persistence.PrePersist;
+
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.persistence.Id;
-
-import lombok.Data;
 
 @MappedSuperclass
 @Getter

@@ -1,11 +1,11 @@
 package com.booking.users.entity;
 
-import com.booking.receptionists.entity.ReceptionistEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.TimestampEntity;
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.entity.HotelManagerEntity;
+import com.booking.receptionists.entity.ReceptionistEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.*;

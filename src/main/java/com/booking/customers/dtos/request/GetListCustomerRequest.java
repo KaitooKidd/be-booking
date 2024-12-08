@@ -1,6 +1,6 @@
 package com.booking.customers.dtos.request;
 
-import com.booking.base.utils.StringUtils;
+import com.booking.utils.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;

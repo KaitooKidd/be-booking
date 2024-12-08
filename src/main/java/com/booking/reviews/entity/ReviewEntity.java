@@ -1,10 +1,12 @@
 package com.booking.reviews.entity;
 
+import jakarta.persistence.*;
+
 import com.booking.base.entity.UUIDEntity;
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.entity.HotelEntity;
 import com.booking.hotels.entity.RoomEntity;
-import jakarta.persistence.*;
+
 import lombok.*;
 
 @Getter
@@ -25,9 +27,9 @@ public class ReviewEntity extends UUIDEntity {
     @JoinColumn(name = "room_id", referencedColumnName = "id", insertable = false, updatable = false)
     private RoomEntity room;
 
-//        @OneToOne(fetch = FetchType.LAZY, optional = false)
-//        @JoinColumn(name = "booking_id", referencedColumnName = "id", insertable = false, updatable = false)
-//        private BookingEntity booking;
+    //        @OneToOne(fetch = FetchType.LAZY, optional = false)
+    //        @JoinColumn(name = "booking_id", referencedColumnName = "id", insertable = false, updatable = false)
+    //        private BookingEntity booking;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -64,7 +66,6 @@ public class ReviewEntity extends UUIDEntity {
     @Column(name = "comment")
     private String comment;
 
-
     @Column(name = "booking_id")
     private String bookingId;
 
@@ -78,12 +79,14 @@ public class ReviewEntity extends UUIDEntity {
     private String customerEmail; // id = email
 
     public Double getTotal() {
-        return Math.round(
-                (staffRating
-                        + facilityRating
-                        + cleanlinessRating
-                        + comfortRating
-                        + valueForMoneyRating
-                        + locationRating) * 100.0 / 6.0) / 100.0;
+        return Math.round((staffRating
+                                + facilityRating
+                                + cleanlinessRating
+                                + comfortRating
+                                + valueForMoneyRating
+                                + locationRating)
+                        * 100.0
+                        / 6.0)
+                / 100.0;
     }
 }

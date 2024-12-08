@@ -1,12 +1,14 @@
 package com.booking.auth.controller;
 
-import com.booking.auth.dto.request.VerifyEmailRequest;
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.booking.auth.dto.request.VerifyEmailRequest;
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.auth.service.FirebaseAuthService;
 import com.booking.users.dtos.request.UserRequest;
@@ -36,7 +38,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/verify-email")
-    UserResponse verifyEmail(@RequestBody VerifyEmailRequest verifyEmailRequest) {
+    UserResponse verifyEmail(@Valid @RequestBody VerifyEmailRequest verifyEmailRequest) {
         return firebaseAuthService.verifyEmail(verifyEmailRequest.getVerifyToken());
     }
 

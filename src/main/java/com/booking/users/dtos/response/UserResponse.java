@@ -1,5 +1,7 @@
 package com.booking.users.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +13,10 @@ import lombok.experimental.FieldDefaults;
 public class UserResponse {
     String id;
     String email;
-    Boolean isVerified;
+
+    @JsonProperty("isVerified")
+    Boolean verified;
+
     String role;
     String name;
     String avatar;

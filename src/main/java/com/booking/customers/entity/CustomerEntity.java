@@ -1,16 +1,16 @@
 package com.booking.customers.entity;
 
-import com.booking.reviews.entity.ReviewEntity;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 import com.booking.address.entity.AddressEntity;
 import com.booking.base.entity.UBaseEntity;
+import com.booking.reviews.entity.ReviewEntity;
 import com.booking.users.entity.UserEntity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,13 +1,14 @@
 package com.booking.reviews.dtos.response;
 
+import java.util.UUID;
+
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.hotels.dtos.response.RoomResponse;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.UUID;
 
 @Data
 @SuperBuilder
@@ -17,7 +18,7 @@ public class ReviewResponse {
     private HotelResponse hotel;
 
     private RoomResponse room;
-//    private BookingEntity booking;
+    //    private BookingEntity booking;
 
     private CustomerEntity customer;
     private String customerName;
@@ -33,5 +34,4 @@ public class ReviewResponse {
     private String comment;
 
     private Double total;
-
 }

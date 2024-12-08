@@ -1,7 +1,5 @@
 package com.booking.hotels.service.impl;
 
-import com.booking.users.dtos.response.UserResponse;
-import com.booking.users.service.UserService;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -14,6 +12,8 @@ import com.booking.hotels.repository.HotelManagerRepository;
 import com.booking.hotels.service.HotelManagerService;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
+import com.booking.users.dtos.response.UserResponse;
+import com.booking.users.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

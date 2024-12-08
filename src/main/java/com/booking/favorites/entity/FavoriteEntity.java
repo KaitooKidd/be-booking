@@ -1,9 +1,11 @@
 package com.booking.favorites.entity;
 
+import jakarta.persistence.*;
+
 import com.booking.base.entity.UUIDEntityWithoutTimestamp;
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.entity.HotelEntity;
-import jakarta.persistence.*;
+
 import lombok.*;
 
 @Getter

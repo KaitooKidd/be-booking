@@ -1,5 +1,9 @@
 package com.booking.reviews.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.reviews.dtos.request.ReviewRequest;
@@ -12,11 +16,9 @@ import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -35,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse createReview(UserRequest userRequest, ReviewRequest request) {
 
         ReviewEntity reviewEntity = reviewRepository.findByBookingId(request.getBookingId());
-        if (reviewEntity!= null) {
+        if (reviewEntity != null) {
             String message = String.format("Review for booking id %s already exists.", request.getBookingId());
             log.error(message);
             throw new AppException(message, ErrorCode.USER_NOT_EXISTED);
@@ -58,7 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         UserResponse userResponse = userService.getUserInfo(userRequest, null);
         if (userResponse.getRole().equals(RoleConstant.CUSTOMER_ROLE)
-        && !userRequest.getEmail().equals(reviewEntity.getCustomerEmail())) {
+                && !userRequest.getEmail().equals(reviewEntity.getCustomerEmail())) {
             String message = "Admin and Owner Review can update review.";
             log.error(message);
             throw new AppException(message, ErrorCode.UNAUTHORIZED);
@@ -79,10 +81,10 @@ public class ReviewServiceImpl implements ReviewService {
         List<ReviewEntity> list = reviewRepository.findAllByRoomId(roomId);
         return list.stream().map(reviewMapper::toResponse).toList();
     }
+
     @Override
     public List<ReviewResponse> getAllByCustomerId(String customerEmail) {
         List<ReviewEntity> list = reviewRepository.findAllByCustomerEmail(customerEmail);
         return list.stream().map(reviewMapper::toResponse).toList();
     }
-
 }
