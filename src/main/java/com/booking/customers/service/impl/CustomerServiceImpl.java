@@ -3,12 +3,10 @@ package com.booking.customers.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import com.booking.users.dtos.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
-import com.booking.base.utils.StringUtils;
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.entity.CustomerEntity;
@@ -19,8 +17,10 @@ import com.booking.customers.service.CustomerService;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
+import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+import com.booking.utils.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

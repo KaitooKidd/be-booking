@@ -1,4 +1,4 @@
-package com.booking.auth.utils;
+package com.booking.utils;
 
 import java.util.Date;
 import java.util.HashMap;

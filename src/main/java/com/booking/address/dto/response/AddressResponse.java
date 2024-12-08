@@ -2,11 +2,13 @@ package com.booking.address.dto.response;
 
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class AddressResponse {
     private String details;
     private String ward;

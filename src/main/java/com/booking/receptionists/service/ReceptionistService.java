@@ -1,12 +1,12 @@
 package com.booking.receptionists.service;
 
+import java.util.List;
+
 import com.booking.receptionists.dtos.request.ReceptionistRequest;
 import com.booking.receptionists.dtos.response.HotelReceptionistResponse;
 import com.booking.receptionists.dtos.response.ReceptionistResponse;
 import com.booking.receptionists.entity.ReceptionistEntity;
 import com.booking.users.dtos.request.UserRequest;
-
-import java.util.List;
 
 @SuppressWarnings("unUsed")
 public interface ReceptionistService {

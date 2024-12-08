@@ -1,4 +1,4 @@
-package com.booking.base.utils;
+package com.booking.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

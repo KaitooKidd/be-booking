@@ -1,15 +1,17 @@
 package com.booking.favorites.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.favorites.entity.FavoriteEntity;
 import com.booking.favorites.repository.FavoriteRepository;
 import com.booking.favorites.service.FavoriteService;
 import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.hotels.mapper.HotelMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -21,7 +23,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<HotelResponse> getListOfHotelsByCustomer(String customerId) {
         List<FavoriteEntity> allFavorites = favoriteRepository.findAllByCustomerEmail(customerId);
-        return allFavorites.stream().map(f -> hotelMapper.toHotelResponse(f.getHotel())).toList();
+        return allFavorites.stream()
+                .map(f -> hotelMapper.toHotelResponse(f.getHotel()))
+                .toList();
     }
 
     @Override

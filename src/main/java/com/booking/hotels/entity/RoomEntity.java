@@ -3,12 +3,12 @@ package com.booking.hotels.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.booking.reviews.entity.ReviewEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.SequenceBaseEntity;
 import com.booking.hotels.decorators.GalleryItemListConverter;
 import com.booking.hotels.dtos.GalleryItem;
+import com.booking.reviews.entity.ReviewEntity;
 
 import lombok.*;
 
@@ -84,7 +84,6 @@ public class RoomEntity extends SequenceBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "hotel_id", referencedColumnName = "id", insertable = false, updatable = false)
     private HotelEntity hotel;
-
 
     @Column(name = "hotel_id")
     private Long hotelId;

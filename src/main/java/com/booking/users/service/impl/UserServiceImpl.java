@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
-import com.booking.auth.service.MailService;
-import com.booking.base.utils.StringUtils;
+import com.booking.notifications.kafka.KafkaEmailProducer;
 import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
@@ -20,6 +19,7 @@ import com.booking.users.mapper.UserMapper;
 import com.booking.users.repository.UserRepository;
 import com.booking.users.service.RoleService;
 import com.booking.users.service.UserService;
+import com.booking.utils.StringUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     RoleService roleService;
     UserMapper userMapper;
     UserHelper userHelper;
-    MailService mailService;
+    KafkaEmailProducer kafkaEmailProducer;
     KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
@@ -85,11 +85,11 @@ public class UserServiceImpl implements UserService {
         try {
             if (!StringUtils.isExist(password)) {
                 password = StringUtils.generatePassword();
+                kafkaEmailProducer.sendCreatePassword(email, password);
                 System.out.println("default password " + password);
             }
             FirebaseAuth.getInstance()
                     .createUser(new UserRecord.CreateRequest().setEmail(email).setPassword(password));
-            mailService.sendVerificationEmail(email, "Your password is " + password);
             log.info("Create user {} successfully", email);
         } catch (FirebaseAuthException e) {
             String message = "Create firebase user error: " + e.getMessage();
@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService {
         }
 
         userEntity.setVerified(true);
-        return userHelper.transformUserResponse(save(userEntity), UserRequest.builder()
-                .email(email).build());
+        return userHelper.transformUserResponse(
+                save(userEntity), UserRequest.builder().email(email).build());
     }
 
     @Override

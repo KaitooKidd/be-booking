@@ -59,7 +59,7 @@ public class HotelController {
     }
 
     @GetMapping("/me")
-    @PreAuthorize("hasAnyAuthority('hotel_manager')")
+    @PreAuthorize("hasAnyAuthority('hotel_manager','receptionist')")
     HotelResponse getCurrentHotel(@AuthenticationPrincipal UserRequest userRequest) {
         return hotelService.getMyHotel(userRequest);
     }

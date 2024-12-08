@@ -1,7 +1,9 @@
 package com.booking.reviews.dtos.request;
 
-import com.booking.reviews.interfaces.MultipleOfPointFive;
 import jakarta.validation.constraints.*;
+
+import com.booking.reviews.interfaces.MultipleOfPointFive;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

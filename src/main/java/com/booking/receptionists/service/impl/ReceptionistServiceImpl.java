@@ -1,13 +1,13 @@
 package com.booking.receptionists.service.impl;
 
+import java.util.*;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
-import com.booking.base.utils.StringUtils;
-import com.booking.customers.dtos.request.CustomerRequest;
-import com.booking.customers.dtos.response.CustomerResponse;
-import com.booking.customers.entity.CustomerEntity;
-import com.booking.customers.helper.CustomerHelper;
-import com.booking.hotels.service.HotelManagerService;
+import com.booking.hotels.entity.HotelEntity;
+import com.booking.hotels.repository.HotelRepository;
 import com.booking.receptionists.dtos.request.ReceptionistRequest;
 import com.booking.receptionists.dtos.response.HotelReceptionistResponse;
 import com.booking.receptionists.dtos.response.ReceptionistResponse;
@@ -18,18 +18,12 @@ import com.booking.receptionists.service.ReceptionistService;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserCreationRequest;
 import com.booking.users.dtos.request.UserRequest;
-import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+import com.booking.utils.StringUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +32,8 @@ public class ReceptionistServiceImpl implements ReceptionistService {
     private final ReceptionistRepository receptionistRepository;
     private final UserService userService;
     private final ReceptionistMapper receptionistMapper;
+
+    private final HotelRepository hotelRepository;
 
     @Override
     public ReceptionistEntity save(ReceptionistEntity receptionist) {
@@ -69,29 +65,32 @@ public class ReceptionistServiceImpl implements ReceptionistService {
             throw new RuntimeException("User not found");
         }
 
-        List<ReceptionistEntity> receptionistEntities = new ArrayList<>();
+        List<HotelEntity> hotelsEntities = new ArrayList<>();
         if (user.getRole().getName().equalsIgnoreCase(RoleConstant.ADMIN_ROLE)) {
-            receptionistEntities = receptionistRepository.findAll();
+            hotelsEntities = hotelRepository.findAllHotelsWithReceptionists();
+        } else if (user.getRole().getName().equalsIgnoreCase(RoleConstant.HOTEL_MANAGER_ROLE)) {
+            hotelsEntities = hotelRepository.findByEmailWithReceptionists(user.getEmail());
         }
-        if (user.getRole().getName().equalsIgnoreCase(RoleConstant.HOTEL_MANAGER_ROLE)) {
-            receptionistEntities = receptionistRepository.findAllByHotelManagerWithFetch(user.getEmail());
-        }
-//        List<ReceptionistEntity> receptionistEntities = receptionistRepository.findAllByHotelIdsWithFetch(hotelIds);
-        Map<Long, List<ReceptionistEntity>> collect = receptionistEntities.stream().collect(Collectors.groupingBy(ReceptionistEntity::getHotelId));
-        return collect.keySet().stream().map(hotelId -> HotelReceptionistResponse.builder()
-                .id(hotelId)
-                .name(collect.get(hotelId).get(0).getHotel().getName())
-                .email(collect.get(hotelId).get(0).getHotel().getEmail())
-                .receptionists(collect.get(hotelId).stream().map(receptionistMapper::toReceptionistResponse).toList())
-                .build()).toList();
+
+        return hotelsEntities.stream()
+                .map(hotel -> HotelReceptionistResponse.builder()
+                        .id(hotel.getId())
+                        .name(hotel.getName())
+                        .email(hotel.getEmail())
+                        .receptionists(hotel.getReceptionists().stream()
+                                .map(receptionistMapper::toReceptionistResponse)
+                                .toList())
+                        .build())
+                .toList();
     }
 
     @Override
     public ReceptionistEntity createReceptionist(UserRequest userRequest, ReceptionistRequest request) {
 
-        UserResponse userResponse = userService.getUserInfo(userRequest, null);
-        if (userResponse.getRole().equals(RoleConstant.HOTEL_MANAGER_ROLE)
-                && !userRequest.getEmail().equals(request.getEmail())) {
+        UserEntity userEntity = userService.getUserByEmail(userRequest.getEmail(), null);
+        Long id = userEntity.getHotelManager().getHotel().getId();
+        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
+                && !Objects.equals(id, request.getHotelId())) {
             log.error("Hotel Manager can create receptionist.");
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
@@ -124,10 +123,11 @@ public class ReceptionistServiceImpl implements ReceptionistService {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
-        UserResponse userResponse = userService.getUserInfo(userRequest, null);
-        if (userResponse.getRole().equals(RoleConstant.HOTEL_MANAGER_ROLE)
-                && !userRequest.getEmail().equals(request.getEmail())) {
-            log.error("Hotel Manager can update receptionist info.");
+        UserEntity userEntity = userService.getUserByEmail(userRequest.getEmail(), null);
+        Long id = userEntity.getHotelManager().getHotel().getId();
+        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
+                && !Objects.equals(id, request.getHotelId())) {
+            log.error("Hotel Manager can create receptionist.");
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
 

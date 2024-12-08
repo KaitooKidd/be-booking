@@ -1,10 +1,11 @@
 package com.booking.reviews.interfaces;
 
-import com.booking.reviews.validator.MultipleOfPointFiveValidator;
+import java.lang.annotation.*;
+
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-import java.lang.annotation.*;
+import com.booking.reviews.validator.MultipleOfPointFiveValidator;
 
 @Documented
 @Constraint(validatedBy = MultipleOfPointFiveValidator.class)
@@ -18,4 +19,3 @@ public @interface MultipleOfPointFive {
 
     Class<? extends Payload>[] payload() default {};
 }
-

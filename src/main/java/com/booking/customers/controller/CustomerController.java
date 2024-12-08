@@ -3,13 +3,13 @@ package com.booking.customers.controller;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.customers.dtos.request.CustomerRequest;
-import com.booking.customers.dtos.request.DeleteCustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.helper.CustomerHelper;
 import com.booking.customers.service.CustomerService;

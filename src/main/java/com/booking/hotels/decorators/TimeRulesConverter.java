@@ -3,8 +3,8 @@ package com.booking.hotels.decorators;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-import com.booking.base.utils.JsonUtils;
 import com.booking.hotels.dtos.TimeRules;
+import com.booking.utils.JsonUtils;
 
 @Converter
 public class TimeRulesConverter implements AttributeConverter<TimeRules, String> {

@@ -17,11 +17,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.booking.auth.constant.RequestConstant;
 import com.booking.auth.dto.CustomAuthenticationToken;
 import com.booking.auth.service.FirebaseAuthService;
-import com.booking.base.utils.StringUtils;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.entity.UserEntity;
 import com.booking.users.service.UserService;
+import com.booking.utils.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 

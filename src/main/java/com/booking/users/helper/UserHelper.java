@@ -2,11 +2,11 @@ package com.booking.users.helper;
 
 import org.springframework.stereotype.Component;
 
-import com.booking.base.utils.StringUtils;
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
+import com.booking.utils.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +19,7 @@ public class UserHelper {
     public UserResponse transformUserResponse(UserEntity userEntity, UserRequest userRequest) {
         UserResponse userResponse = UserResponse.builder()
                 .email(userEntity.getEmail())
-                .isVerified(userEntity.isVerified())
+                .verified(userEntity.isVerified())
                 .role(userEntity.getRole().getName())
                 .build();
 
