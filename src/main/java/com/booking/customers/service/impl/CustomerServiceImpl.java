@@ -3,6 +3,7 @@ package com.booking.customers.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import com.booking.users.dtos.response.UserResponse;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -101,7 +102,8 @@ public class CustomerServiceImpl implements CustomerService {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
-        if (customer.getUser().getRole().getName().equals(RoleConstant.CUSTOMER_ROLE)
+        UserResponse userResponse = userService.getUserInfo(userRequest, null);
+        if (userResponse.getRole().equals(RoleConstant.CUSTOMER_ROLE)
                 && !userRequest.getEmail().equals(request.getEmail())) {
             log.error("Owner Customer can update info.");
             throw new AppException(ErrorCode.UNAUTHORIZED);
@@ -113,6 +115,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(List<String> emails) {
+        if (emails == null) throw new AppException("Emails not found", ErrorCode.FORBIDDEN_REQUEST);
         customerRepository.deleteAllByEmails(emails);
     }
 }

@@ -3,6 +3,8 @@ package com.booking.hotels.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.booking.receptionists.entity.ReceptionistEntity;
+import com.booking.reviews.entity.ReviewEntity;
 import jakarta.persistence.*;
 
 import com.booking.address.entity.AddressEntity;
@@ -47,6 +49,10 @@ public class HotelEntity extends SequenceBaseEntity {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RoomEntity> rooms;
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReceptionistEntity> receptionists;
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> reviews;
 
     @Convert(converter = GalleryItemListConverter.class)
     private List<GalleryItem> gallery = new ArrayList<>();
@@ -85,13 +91,6 @@ public class HotelEntity extends SequenceBaseEntity {
 
     //    @OneToMany(() => BookingEntity, (booking) => booking.hotel)
     //    bookings: BookingEntity[];
-    //
-    //    @Expose({ groups: ['reviews'] })
-    //    @OneToMany(() => ReviewEntity, (review) => review.hotel)
-    //    reviews: ReviewEntity[];
-    //
-    //    @OneToMany(() => ReceptionistEntity, (receptionist) => receptionist.hotel)
-    //    receptionists: ReceptionistEntity[];
     public HotelOverview getOverview() {
         Double minPrice = null;
         HotelOverview hotelOverview = new HotelOverview();
@@ -107,7 +106,15 @@ public class HotelEntity extends SequenceBaseEntity {
             hotelOverview.setRooms(rooms.size(), minPrice);
         }
 
-        // TODO: 11/16/2024 Set review to HotelOverview
+        if (reviews != null && reviews.size() > 0) {
+            int total = 0;
+            int average = 0;
+            for (ReviewEntity review : reviews) {
+                total += review.getTotal();
+            }
+            average = total / reviews.size();
+            hotelOverview.setReviews(reviews.size(), average);
+        }
         return hotelOverview;
     }
 }

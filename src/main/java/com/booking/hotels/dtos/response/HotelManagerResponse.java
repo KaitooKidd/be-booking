@@ -1,9 +1,10 @@
 package com.booking.hotels.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import com.booking.customers.enums.GenderType;
+import com.booking.base.enums.GenderType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -26,5 +27,11 @@ public class HotelManagerResponse {
     private String phone;
 
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private GenderType gender;
+
+    @JsonProperty("gender")
+    public String getGenderStringName() {
+        return getGender() == null ? "" : getGender().name;
+    }
 }

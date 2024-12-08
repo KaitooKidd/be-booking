@@ -2,6 +2,7 @@ package com.booking.customers.controller;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +51,8 @@ public class CustomerController {
 
     @DeleteMapping("")
     @PreAuthorize("hasAnyAuthority('admin')")
-    ApiResponse<Void> deleteCustomer(@RequestBody DeleteCustomerRequest deleteCustomerRequest) {
-        customerService.deleteCustomer(deleteCustomerRequest.getEmails());
+    ApiResponse<Void> deleteCustomer(@RequestParam(required = false) List<@Email String> emails) {
+        customerService.deleteCustomer(emails);
         return ApiResponse.<Void>builder().build();
     }
 }

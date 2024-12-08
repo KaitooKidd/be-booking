@@ -1,5 +1,6 @@
 package com.booking.customers.entity;
 
+import com.booking.reviews.entity.ReviewEntity;
 import jakarta.persistence.*;
 
 import com.booking.address.entity.AddressEntity;
@@ -8,6 +9,8 @@ import com.booking.users.entity.UserEntity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +34,6 @@ public class CustomerEntity extends UBaseEntity {
     //    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     //    private List<BookingEntity> bookings;
 
-    //    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    //    private List<ReviewEntity> reviews;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> reviews;
 }

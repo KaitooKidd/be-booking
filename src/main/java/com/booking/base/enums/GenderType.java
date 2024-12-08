@@ -1,4 +1,4 @@
-package com.booking.customers.enums;
+package com.booking.base.enums;
 
 public enum GenderType {
     PRIVATE("private"),
