@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VerifyEmailRequest {
-    private String email;
+    private String verifyToken;
 }
