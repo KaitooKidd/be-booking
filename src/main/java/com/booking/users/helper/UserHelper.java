@@ -47,7 +47,10 @@ public class UserHelper {
             return userResponse;
         }
         if (userEntity.getRole().getName().equals(RoleConstant.RECEPTIONIST_ROLE)) {
-            // TODO: 11/5/2024 Set Receptionist info
+            userResponse.setId(userEntity.getReceptionist().getEmail());
+            userResponse.setName(userEntity.getReceptionist().getName());
+            userResponse.setAvatar(userEntity.getReceptionist().getAvatar());
+            return userResponse;
         }
         String message = "Role " + userEntity.getRole().getName() + " is not supported";
         log.error(message);

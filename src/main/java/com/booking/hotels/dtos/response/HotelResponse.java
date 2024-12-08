@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.booking.reviews.dtos.response.ReviewResponse;
 import jakarta.persistence.Convert;
 
 import com.booking.address.dto.response.AddressResponse;
@@ -59,5 +60,6 @@ public class HotelResponse {
     private Date deletedAt;
 
     private List<RoomResponse> rooms;
+    private List<ReviewResponse> reviews;
     private HotelOverview overview;
 }

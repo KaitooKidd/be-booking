@@ -3,6 +3,7 @@ package com.booking.hotels.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.booking.reviews.entity.ReviewEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.SequenceBaseEntity;
@@ -88,12 +89,13 @@ public class RoomEntity extends SequenceBaseEntity {
     @Column(name = "hotel_id")
     private Long hotelId;
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewEntity> reviews;
+
     //    @Expose({ groups: ['bookings'] })
     //    @OneToMany(() => BookingEntity, (booking) => booking.room)
     //    bookings: BookingEntity[];
-    //
-    //    @OneToMany(() => ReviewEntity, (review) => review.room)
-    //    reviews: ReviewEntity[];
+
     //
     //    @Expose()
     //    get occupiedTimes(): [string, string][] {

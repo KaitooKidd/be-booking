@@ -2,6 +2,7 @@ package com.booking.receptionists.dtos.response;
 
 import com.booking.address.dto.response.AddressResponse;
 import com.booking.base.enums.GenderType;
+import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.users.dtos.response.UserResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

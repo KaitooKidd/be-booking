@@ -3,6 +3,7 @@ package com.booking.hotels.dtos.response;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.booking.reviews.dtos.response.ReviewResponse;
 import jakarta.persistence.Convert;
 
 import com.booking.hotels.decorators.GalleryItemListConverter;

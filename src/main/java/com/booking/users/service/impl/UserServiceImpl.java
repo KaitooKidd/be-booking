@@ -109,7 +109,8 @@ public class UserServiceImpl implements UserService {
         }
 
         userEntity.setVerified(true);
-        return userMapper.toUserResponse(save(userEntity));
+        return userHelper.transformUserResponse(save(userEntity), UserRequest.builder()
+                .email(email).build());
     }
 
     @Override

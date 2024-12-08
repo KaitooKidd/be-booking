@@ -68,7 +68,15 @@ public class ReceptionistServiceImpl implements ReceptionistService {
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        List<ReceptionistEntity> receptionistEntities = receptionistRepository.findAllByHotelIdsWithFetch(hotelIds);
+
+        List<ReceptionistEntity> receptionistEntities = new ArrayList<>();
+        if (user.getRole().getName().equalsIgnoreCase(RoleConstant.ADMIN_ROLE)) {
+            receptionistEntities = receptionistRepository.findAll();
+        }
+        if (user.getRole().getName().equalsIgnoreCase(RoleConstant.HOTEL_MANAGER_ROLE)) {
+            receptionistEntities = receptionistRepository.findAllByHotelManagerWithFetch(user.getEmail());
+        }
+//        List<ReceptionistEntity> receptionistEntities = receptionistRepository.findAllByHotelIdsWithFetch(hotelIds);
         Map<Long, List<ReceptionistEntity>> collect = receptionistEntities.stream().collect(Collectors.groupingBy(ReceptionistEntity::getHotelId));
         return collect.keySet().stream().map(hotelId -> HotelReceptionistResponse.builder()
                 .id(hotelId)

@@ -1,5 +1,6 @@
 package com.booking.users.entity;
 
+import com.booking.receptionists.entity.ReceptionistEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.TimestampEntity;
@@ -37,7 +38,7 @@ public class UserEntity extends TimestampEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private HotelManagerEntity hotelManager;
-    //
-    //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    private ReceptionistEntity receptionist;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ReceptionistEntity receptionist;
 }
