@@ -41,9 +41,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentUrlResponse createVnpayPaymentURL(HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) {
         BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
-//        BookingEntity booking = new BookingEntity();
         String orderId = booking.getPaymentId();
-        String amount = String.valueOf(BigDecimal.valueOf(booking.getTotalPrice()).multiply(BigDecimal.valueOf(100)));
+        String amount = BigDecimal.valueOf(booking.getTotalPrice())
+                .multiply(BigDecimal.valueOf(100))
+                .stripTrailingZeros()
+                .toPlainString();
         String locale = paymentUrlRequest.getLocale();
 
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
