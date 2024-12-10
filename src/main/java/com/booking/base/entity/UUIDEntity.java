@@ -2,9 +2,7 @@ package com.booking.base.entity;
 
 import java.util.UUID;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +12,13 @@ import lombok.Setter;
 @Setter
 public abstract class UUIDEntity extends TimestampEntity {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @PrePersist
     public void prePersist() {
         if (id == null) {
-            id = UUID.randomUUID();
+            id = UUID.randomUUID().toString();
         }
     }
 }

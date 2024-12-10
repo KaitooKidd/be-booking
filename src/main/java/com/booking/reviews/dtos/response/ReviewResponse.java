@@ -1,11 +1,8 @@
 package com.booking.reviews.dtos.response;
 
-import java.util.UUID;
-
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.hotels.dtos.response.RoomResponse;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class ReviewResponse {
-    private UUID id;
+    private String id;
     private HotelResponse hotel;
 
     private RoomResponse room;

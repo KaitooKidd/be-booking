@@ -2,6 +2,10 @@ package com.booking.reviews.service.impl;
 
 import java.util.List;
 
+import com.booking.bookings.dtos.request.UpdateBookingStatusRequest;
+import com.booking.bookings.entity.BookingEntity;
+import com.booking.bookings.enums.BookingStatus;
+import com.booking.bookings.service.BookingService;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -27,6 +31,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
     private final UserService userService;
+    private final BookingService bookingService;
 
     @Override
     public ReviewEntity save(ReviewEntity reviewEntity) {
@@ -43,9 +48,30 @@ public class ReviewServiceImpl implements ReviewService {
             throw new AppException(message, ErrorCode.USER_NOT_EXISTED);
         }
 
-        // TODO: 12/7/2024 Create new review
+        BookingEntity bookingEntity = bookingService.getBookingById(request.getBookingId(), null);
+        UserResponse userResponse = userService.getUserInfo(userRequest, null);
+        if (userResponse.getRole().equals(RoleConstant.CUSTOMER_ROLE)
+                && !userRequest.getEmail().equals(bookingEntity.getCustomerEmail())) {
+            String message = "Admin and Owner Booking can create review.";
+            log.error(message);
+            throw new AppException(message, ErrorCode.UNAUTHORIZED);
+        }
 
-        return null;
+        reviewEntity = reviewMapper.toEntity(request);
+        reviewEntity.setCustomerName(bookingEntity.getCustomer().getName());
+        reviewEntity.setCustomerImage(bookingEntity.getCustomer().getAvatar());
+        reviewEntity.setCustomerEmail(bookingEntity.getCustomer().getEmail());
+        reviewEntity.setHotelId(bookingEntity.getHotelId());
+        reviewEntity.setHotelOwnerEmail(bookingEntity.getHotelOwnerEmail());
+        reviewEntity.setRoomId(bookingEntity.getRoomId());
+
+        reviewEntity = save(reviewEntity);
+
+        bookingService.updateBookingStatus(bookingEntity.getId().toString(),
+                new UpdateBookingStatusRequest(BookingStatus.reviewed),
+                userRequest);
+
+        return reviewMapper.toResponse(reviewEntity);
     }
 
     @Override

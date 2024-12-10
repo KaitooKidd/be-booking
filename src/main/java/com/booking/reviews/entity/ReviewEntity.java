@@ -1,5 +1,6 @@
 package com.booking.reviews.entity;
 
+import com.booking.bookings.entity.BookingEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.UUIDEntity;
@@ -27,9 +28,9 @@ public class ReviewEntity extends UUIDEntity {
     @JoinColumn(name = "room_id", referencedColumnName = "id", insertable = false, updatable = false)
     private RoomEntity room;
 
-    //        @OneToOne(fetch = FetchType.LAZY, optional = false)
-    //        @JoinColumn(name = "booking_id", referencedColumnName = "id", insertable = false, updatable = false)
-    //        private BookingEntity booking;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private BookingEntity booking;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
@@ -80,13 +81,13 @@ public class ReviewEntity extends UUIDEntity {
 
     public Double getTotal() {
         return Math.round((staffRating
-                                + facilityRating
-                                + cleanlinessRating
-                                + comfortRating
-                                + valueForMoneyRating
-                                + locationRating)
-                        * 100.0
-                        / 6.0)
+                + facilityRating
+                + cleanlinessRating
+                + comfortRating
+                + valueForMoneyRating
+                + locationRating)
+                * 100.0
+                / 6.0)
                 / 100.0;
     }
 }
