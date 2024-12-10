@@ -16,19 +16,14 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -44,9 +39,9 @@ public class PaymentServiceImpl implements PaymentService {
     private String contextPath;
 
     @Override
-    public PaymentUrlResponse createVnpayPaymentURL(HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) throws Exception {
-//        BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
-        BookingEntity booking = new BookingEntity();
+    public PaymentUrlResponse createVnpayPaymentURL(HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) {
+        BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
+//        BookingEntity booking = new BookingEntity();
         String orderId = booking.getPaymentId();
         String amount = String.valueOf(BigDecimal.valueOf(booking.getTotalPrice()).multiply(BigDecimal.valueOf(100)));
         String locale = paymentUrlRequest.getLocale();
