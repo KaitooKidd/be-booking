@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VnpayResultInfo extends PaymentInfo{
+public class VnpayResultInfo extends PaymentInfo {
     private String vnp_Amount;
     private String vnp_TxnRef;
     private String vnp_PayDate;

@@ -2,14 +2,19 @@ package com.booking.customers.mapper;
 
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import com.booking.customers.dtos.request.CustomerRequest;
+import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.entity.CustomerEntity;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface CustomerMapper {
     CustomerEntity toCustomer(CustomerRequest request);
+
+    @Mapping(target = "user.role", ignore = true)
+    CustomerResponse toCustomerResponse(CustomerEntity customerEntity);
 
     void updateCustomer(@MappingTarget CustomerEntity entity, CustomerRequest request);
 }

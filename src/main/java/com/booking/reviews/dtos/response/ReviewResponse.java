@@ -1,8 +1,7 @@
 package com.booking.reviews.dtos.response;
 
-import com.booking.customers.entity.CustomerEntity;
-import com.booking.hotels.dtos.response.HotelResponse;
-import com.booking.hotels.dtos.response.RoomResponse;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -12,12 +11,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class ReviewResponse {
     private String id;
-    private HotelResponse hotel;
-
-    private RoomResponse room;
-    //    private BookingEntity booking;
-
-    private CustomerEntity customer;
+    private Date createdAt;
+    private Date updatedAt;
     private String customerName;
     private String customerImage;
     private String hotelOwnerEmail;

@@ -1,20 +1,20 @@
 package com.booking.bookings.dtos.response;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import com.booking.bookings.dtos.PaymentInfo;
 import com.booking.bookings.enums.BookingStatus;
 import com.booking.bookings.enums.PaymentChannel;
 import com.booking.bookings.enums.PaymentCurrency;
-import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.hotels.dtos.TimeRules;
 import com.booking.hotels.dtos.response.HotelResponse;
 import com.booking.hotels.dtos.response.RoomResponse;
-import com.booking.reviews.dtos.response.ReviewResponse;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @SuperBuilder
@@ -24,10 +24,10 @@ public class BookingResponse {
     private HotelResponse hotel;
 
     private RoomResponse room;
-
-    private ReviewResponse review;
-
-    private CustomerResponse customer;
+    //
+    //    private ReviewResponse review;
+    //
+    //    private CustomerResponse customer;
 
     private String customerName;
 
@@ -45,6 +45,7 @@ public class BookingResponse {
 
     private Double totalPrice;
 
+    @JsonProperty("isPaid")
     private boolean isPaid;
 
     private PaymentChannel paymentChannel;

@@ -10,7 +10,6 @@ import com.booking.auth.exception.ErrorCode;
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
 import com.booking.customers.entity.CustomerEntity;
-import com.booking.customers.helper.CustomerHelper;
 import com.booking.customers.mapper.CustomerMapper;
 import com.booking.customers.repository.CustomerRepository;
 import com.booking.customers.service.CustomerService;
@@ -53,13 +52,13 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer == null) {
             throw new RuntimeException("Customer not found");
         }
-        return CustomerHelper.toCustomerResponse(customer);
+        return customerMapper.toCustomerResponse(customer);
     }
 
     @Override
     public List<CustomerResponse> getAllCustomersByEmailWithFetch(List<String> emails) {
         List<CustomerEntity> customers = customerRepository.findAllByEmailsWithFetch(emails);
-        return customers.stream().map(CustomerHelper::toCustomerResponse).toList();
+        return customers.stream().map(customerMapper::toCustomerResponse).toList();
     }
 
     @Override
@@ -67,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
         List<CustomerEntity> customers = customerRepository.findAllByWithFetch();
         return customers.stream()
                 .filter(c -> isVerified == null || c.getUser().isVerified() == isVerified)
-                .map(CustomerHelper::toCustomerResponse)
+                .map(customerMapper::toCustomerResponse)
                 .toList();
     }
 
@@ -93,7 +92,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerEntity updateCustomer(UserRequest userRequest, CustomerRequest request) {
+    public CustomerResponse updateCustomer(UserRequest userRequest, CustomerRequest request) {
 
         CustomerEntity customer = customerRepository.findByEmail(request.getEmail());
 
@@ -110,7 +109,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         customerMapper.updateCustomer(customer, request);
-        return save(customer);
+        return customerMapper.toCustomerResponse(save(customer));
     }
 
     @Override

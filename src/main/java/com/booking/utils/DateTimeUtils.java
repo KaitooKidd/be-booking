@@ -1,9 +1,9 @@
 package com.booking.utils;
 
-import jakarta.validation.ConstraintViolationException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import jakarta.validation.ConstraintViolationException;
 
 public class DateTimeUtils {
     public static LocalDate toLocalDate(String date) {

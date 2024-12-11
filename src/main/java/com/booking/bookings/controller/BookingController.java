@@ -1,5 +1,15 @@
 package com.booking.bookings.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.bookings.dtos.request.BookingRequest;
 import com.booking.bookings.dtos.request.CreatePaymentUrlRequest;
@@ -9,22 +19,12 @@ import com.booking.bookings.dtos.response.PaymentUrlResponse;
 import com.booking.bookings.service.BookingService;
 import com.booking.bookings.service.PaymentService;
 import com.booking.users.dtos.request.UserRequest;
-import com.booking.utils.JsonUtils;
-import io.grpc.netty.shaded.io.netty.util.concurrent.UnaryPromiseNotifier;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import org.bson.Document;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/bookings")
@@ -37,35 +37,31 @@ public class BookingController {
     PaymentService paymentService;
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('admin','customer'. 'hotel_manager')")
+    @PreAuthorize("hasAnyAuthority('receptionist','hotel_manager')")
     ApiResponse<Void> updateBookingStatus(
             @PathVariable("id") String id,
             @AuthenticationPrincipal UserRequest userRequest,
             @RequestBody UpdateBookingStatusRequest updateRequest) {
         bookingService.updateBookingStatus(id, updateRequest, userRequest);
-        return ApiResponse.<Void>builder()
-                .code(1000)
-                .message("Success").build();
+        return ApiResponse.<Void>builder().code(1000).message("Success").build();
     }
 
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('customer')")
     BookingResponse createBooking(
-            @AuthenticationPrincipal UserRequest userRequest,
-            @RequestBody BookingRequest bookingRequest) {
+            @AuthenticationPrincipal UserRequest userRequest, @RequestBody BookingRequest bookingRequest) {
         return bookingService.createBooking(userRequest, bookingRequest);
     }
 
     @GetMapping("")
-    List<BookingResponse> listMyBookings( @AuthenticationPrincipal UserRequest userRequest) {
+    List<BookingResponse> listMyBookings(@AuthenticationPrincipal UserRequest userRequest) {
         return bookingService.listMyBookings(userRequest);
     }
 
     @PostMapping("/payment/vnpay")
-//    @PreAuthorize("hasAnyAuthority('customer')")
+    //    @PreAuthorize("hasAnyAuthority('customer')")
     PaymentUrlResponse createVnpayPaymentURL(
-            HttpServletRequest request,
-            @RequestBody CreatePaymentUrlRequest bookingRequest) throws Exception {
+            HttpServletRequest request, @RequestBody CreatePaymentUrlRequest bookingRequest) throws Exception {
         return paymentService.createVnpayPaymentURL(request, bookingRequest);
     }
 

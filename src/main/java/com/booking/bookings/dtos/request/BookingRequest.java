@@ -1,11 +1,13 @@
 package com.booking.bookings.dtos.request;
 
+import jakarta.persistence.Convert;
+import jakarta.validation.constraints.Pattern;
+
 import com.booking.bookings.enums.PaymentChannel;
 import com.booking.bookings.enums.PaymentCurrency;
 import com.booking.hotels.decorators.TimeRulesConverter;
 import com.booking.hotels.dtos.TimeRules;
-import jakarta.persistence.Convert;
-import jakarta.validation.constraints.Pattern;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +40,4 @@ public class BookingRequest {
     private TimeRules timeRules;
 
     private PaymentChannel paymentChannel = PaymentChannel.vn_pay;
-
 }

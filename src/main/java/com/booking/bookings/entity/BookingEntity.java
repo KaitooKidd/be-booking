@@ -1,5 +1,10 @@
 package com.booking.bookings.entity;
 
+import java.time.LocalDate;
+import java.util.Date;
+
+import jakarta.persistence.*;
+
 import com.booking.base.entity.UUIDEntity;
 import com.booking.bookings.decorators.PaymentInfoConverter;
 import com.booking.bookings.dtos.PaymentInfo;
@@ -12,12 +17,8 @@ import com.booking.hotels.dtos.TimeRules;
 import com.booking.hotels.entity.HotelEntity;
 import com.booking.hotels.entity.RoomEntity;
 import com.booking.reviews.entity.ReviewEntity;
-import jakarta.persistence.*;
-import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import lombok.*;
 
 @Getter
 @Setter
@@ -85,7 +86,7 @@ public class BookingEntity extends UUIDEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private BookingStatus status = BookingStatus.booked;
 
     @Column(name = "created_at", updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,5 +100,4 @@ public class BookingEntity extends UUIDEntity {
 
     @Column(name = "customer_id")
     private String customerEmail; // id = email
-
 }

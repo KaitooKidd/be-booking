@@ -1,10 +1,10 @@
 package com.booking.bookings.decorators;
 
-import com.booking.bookings.dtos.PaymentInfo;
-import com.booking.hotels.dtos.TimeRules;
-import com.booking.utils.JsonUtils;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
+
+import com.booking.bookings.dtos.PaymentInfo;
+import com.booking.utils.JsonUtils;
 
 @Converter
 public class PaymentInfoConverter implements AttributeConverter<PaymentInfo, String> {

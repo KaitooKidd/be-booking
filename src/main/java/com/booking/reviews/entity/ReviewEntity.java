@@ -1,12 +1,13 @@
 package com.booking.reviews.entity;
 
-import com.booking.bookings.entity.BookingEntity;
 import jakarta.persistence.*;
 
 import com.booking.base.entity.UUIDEntity;
+import com.booking.bookings.entity.BookingEntity;
 import com.booking.customers.entity.CustomerEntity;
 import com.booking.hotels.entity.HotelEntity;
 import com.booking.hotels.entity.RoomEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.*;
 
@@ -34,6 +35,7 @@ public class ReviewEntity extends UUIDEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonBackReference
     private CustomerEntity customer;
 
     @Column(name = "customer_name", nullable = false)
@@ -81,13 +83,13 @@ public class ReviewEntity extends UUIDEntity {
 
     public Double getTotal() {
         return Math.round((staffRating
-                + facilityRating
-                + cleanlinessRating
-                + comfortRating
-                + valueForMoneyRating
-                + locationRating)
-                * 100.0
-                / 6.0)
+                                + facilityRating
+                                + cleanlinessRating
+                                + comfortRating
+                                + valueForMoneyRating
+                                + locationRating)
+                        * 100.0
+                        / 6.0)
                 / 100.0;
     }
 }

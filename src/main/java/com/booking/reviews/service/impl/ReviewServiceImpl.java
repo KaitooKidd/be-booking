@@ -2,14 +2,14 @@ package com.booking.reviews.service.impl;
 
 import java.util.List;
 
-import com.booking.bookings.dtos.request.UpdateBookingStatusRequest;
-import com.booking.bookings.entity.BookingEntity;
-import com.booking.bookings.enums.BookingStatus;
-import com.booking.bookings.service.BookingService;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
+import com.booking.bookings.dtos.request.UpdateBookingStatusRequest;
+import com.booking.bookings.entity.BookingEntity;
+import com.booking.bookings.enums.BookingStatus;
+import com.booking.bookings.service.BookingService;
 import com.booking.reviews.dtos.request.ReviewRequest;
 import com.booking.reviews.dtos.response.ReviewResponse;
 import com.booking.reviews.entity.ReviewEntity;
@@ -67,9 +67,8 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewEntity = save(reviewEntity);
 
-        bookingService.updateBookingStatus(bookingEntity.getId().toString(),
-                new UpdateBookingStatusRequest(BookingStatus.reviewed),
-                userRequest);
+        bookingService.updateBookingStatus(
+                bookingEntity.getId().toString(), new UpdateBookingStatusRequest(BookingStatus.reviewed), userRequest);
 
         return reviewMapper.toResponse(reviewEntity);
     }

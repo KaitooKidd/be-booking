@@ -1,14 +1,12 @@
 package com.booking.bookings.dtos.request;
 
 import com.booking.auth.constant.LocaleConstant;
-import com.booking.bookings.enums.BookingStatus;
 import com.booking.bookings.enums.VNPayBankCode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Locale;
 
 @Data
 @AllArgsConstructor
@@ -18,6 +16,7 @@ import java.util.Locale;
 public class CreatePaymentUrlRequest {
     private VNPayBankCode bankCode;
     private String bookingId;
+
     @Builder.Default
     private String locale = LocaleConstant.VN;
 

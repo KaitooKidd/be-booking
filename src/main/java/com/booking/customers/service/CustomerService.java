@@ -21,7 +21,7 @@ public interface CustomerService {
 
     UserEntity createUnverifiedCustomer(CustomerRequest request, Boolean shouldCreateFirebaseUser);
 
-    CustomerEntity updateCustomer(UserRequest userRequest, CustomerRequest request);
+    CustomerResponse updateCustomer(UserRequest userRequest, CustomerRequest request);
 
     void deleteCustomer(List<String> emails);
 }

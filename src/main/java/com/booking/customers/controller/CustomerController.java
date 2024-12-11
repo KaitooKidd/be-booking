@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.customers.dtos.request.CustomerRequest;
 import com.booking.customers.dtos.response.CustomerResponse;
-import com.booking.customers.helper.CustomerHelper;
 import com.booking.customers.service.CustomerService;
 import com.booking.users.dtos.request.UserRequest;
 
@@ -34,7 +33,7 @@ public class CustomerController {
     @PreAuthorize("hasAnyAuthority('admin','customer')")
     CustomerResponse updateCustomer(
             @AuthenticationPrincipal UserRequest userRequest, @RequestBody CustomerRequest customerRequest) {
-        return CustomerHelper.toCustomerResponse(customerService.updateCustomer(userRequest, customerRequest));
+        return customerService.updateCustomer(userRequest, customerRequest);
     }
 
     @GetMapping("/me")

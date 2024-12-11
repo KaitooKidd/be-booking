@@ -1,5 +1,11 @@
 package com.booking.bookings.service.impl;
 
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.booking.auth.exception.AppException;
 import com.booking.auth.exception.ErrorCode;
 import com.booking.bookings.dtos.PaymentInfo;
@@ -20,13 +26,9 @@ import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.service.UserService;
 import com.booking.utils.DateTimeUtils;
 import com.booking.utils.StringUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -74,15 +76,19 @@ public class BookingServiceImpl implements BookingService {
         BookingEntity bookingEntity = getBookingById(bookingId, null);
 
         UserResponse userResponse = userService.getUserInfo(userRequest, null);
-        if ((userResponse.getRole().equals(RoleConstant.CUSTOMER_ROLE) && !userResponse.getEmail().equals(bookingEntity.getCustomerEmail()))
-                || (userResponse.getRole().equals(RoleConstant.HOTEL_MANAGER_ROLE) && !userResponse.getEmail().equals(bookingEntity.getHotelOwnerEmail()))) {
+        if ((userResponse.getRole().equals(RoleConstant.CUSTOMER_ROLE)
+                        && !userResponse.getEmail().equals(bookingEntity.getCustomerEmail()))
+                || (userResponse.getRole().equals(RoleConstant.HOTEL_MANAGER_ROLE)
+                        && !userResponse.getEmail().equals(bookingEntity.getHotelOwnerEmail()))) {
             String message = "Admin or Owner Hotel/Customer can update booking.";
             log.error(message);
             throw new AppException(message, ErrorCode.UNAUTHORIZED);
         }
 
-        if (request.getStatus() != null && !BookingStatus.nextValues(bookingEntity.getStatus(), true).contains(request.getStatus())) {
-            String message = String.format("Cannot change status from %s to %s.", bookingEntity.getStatus(), request.getStatus());
+        if (request.getStatus() != null
+                && !BookingStatus.nextValues(bookingEntity.getStatus(), true).contains(request.getStatus())) {
+            String message = String.format(
+                    "Cannot change status from %s to %s.", bookingEntity.getStatus(), request.getStatus());
             log.error(message);
             throw new AppException(message, ErrorCode.INVALID_KEY);
         }
@@ -103,10 +109,9 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponse createBooking(UserRequest userRequest, BookingRequest request) {
 
         List<BookingEntity> bookings = bookingRepository.findAllByHotelIdAndRoomIdAndCustomerEmail(
-                request.getHotelId(), request.getRoomId(), userRequest.getEmail()
-        );
-        if (bookings.stream().anyMatch(b ->
-                b.getStartDate().isAfter(DateTimeUtils.toLocalDate(request.getStartDate()))
+                request.getHotelId(), request.getRoomId(), userRequest.getEmail());
+        if (bookings.stream()
+                .anyMatch(b -> b.getStartDate().isAfter(DateTimeUtils.toLocalDate(request.getStartDate()))
                         && b.getEndDate().isBefore(DateTimeUtils.toLocalDate(request.getEndDate())))) {
             String message = "Booking already exists for the given date range";
             log.error(message);
@@ -139,19 +144,22 @@ public class BookingServiceImpl implements BookingService {
 
         List<BookingEntity> bookings;
         switch (userResponse.getRole()) {
-            case RoleConstant.HOTEL_MANAGER_ROLE ->
-                    bookings = bookingRepository.findAllByHotelOwnerEmail(userResponse.getEmail());
+            case RoleConstant.HOTEL_MANAGER_ROLE -> bookings =
+                    bookingRepository.findAllByHotelOwnerEmail(userResponse.getEmail());
             case RoleConstant.RECEPTIONIST_ROLE -> {
                 HotelEntity hotel = hotelService.getReceptionistHotel(userResponse.getEmail());
                 bookings = bookingRepository.findAllByHotelOwnerEmail(hotel.getEmail());
             }
-            case RoleConstant.CUSTOMER_ROLE ->
-                    bookings = bookingRepository.findAllByCustomerEmail(userResponse.getEmail());
+            case RoleConstant.CUSTOMER_ROLE -> bookings =
+                    bookingRepository.findAllByCustomerEmail(userResponse.getEmail());
             case RoleConstant.ADMIN_ROLE -> bookings = bookingRepository.findAll();
             default -> throw new AppException("Invalid user role", ErrorCode.FORBIDDEN_REQUEST);
         }
 
-        return bookings.stream().map(bookingMapper::toResponse).sorted(Comparator.comparing(BookingResponse::getCreatedAt)).toList();
+        return bookings.stream()
+                .map(bookingMapper::toResponse)
+                .sorted(Comparator.comparing(BookingResponse::getCreatedAt))
+                .toList();
     }
 
     private String generatePaymentId(PaymentChannel paymentChannel, String customerEmail) {

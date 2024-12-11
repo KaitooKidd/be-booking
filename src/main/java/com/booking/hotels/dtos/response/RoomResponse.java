@@ -7,6 +7,7 @@ import jakarta.persistence.Convert;
 
 import com.booking.hotels.decorators.GalleryItemListConverter;
 import com.booking.hotels.dtos.GalleryItem;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.*;
 
@@ -42,4 +43,7 @@ public class RoomResponse {
     private boolean mountainView;
     private boolean airCondition;
     private boolean soundProofed;
+
+    @JsonProperty("occupiedTimes")
+    private List<String[]> occupiedTimes;
 }
