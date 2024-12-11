@@ -63,7 +63,7 @@ public class RoomEntity extends SequenceBaseEntity {
     @Column(name = "free_wifi")
     private boolean freeWifi;
 
-    @Column(name = "city_iew")
+    @Column(name = "city_view")
     private boolean cityView;
 
     @Column(name = "ocean_view")
