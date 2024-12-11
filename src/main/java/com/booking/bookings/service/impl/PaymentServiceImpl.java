@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.math.BigDecimal;
+import javax.print.DocFlavor;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
@@ -35,15 +35,13 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Value("${email.client-url}")
     private String clientUrl;
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
 
     @Override
     public PaymentUrlResponse createVnpayPaymentURL(HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) {
         BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
 //        BookingEntity booking = new BookingEntity();
         String orderId = booking.getPaymentId();
-        String amount = String.valueOf(BigDecimal.valueOf(booking.getTotalPrice()).multiply(BigDecimal.valueOf(100)));
+        String amount = String.valueOf((long) (booking.getTotalPrice() * 100));
         String locale = paymentUrlRequest.getLocale();
 
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
@@ -58,8 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
             vnpParamsMap.put("vnp_BankCode", paymentUrlRequest.getBankCode().name());
         }
 
-        String serverURL = String.format("%s://%s", request.getScheme(), request.getServerName());
-        String returnUrl = serverURL + contextPath + "/bookings/payment/return/vnpay";
+        String returnUrl = request.getRequestURL().toString().replace(request.getServletPath(), "/bookings/payment/return/vnpay");
         vnpParamsMap.put("vnp_ReturnUrl", returnUrl);
 
         //build query url
