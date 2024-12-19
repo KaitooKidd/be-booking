@@ -2,17 +2,15 @@ package com.booking.customers.dtos.response;
 
 import java.util.Date;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
 import com.booking.address.dto.response.AddressResponse;
-import com.booking.address.entity.AddressEntity;
 import com.booking.base.enums.GenderType;
-import com.booking.customers.entity.CustomerEntity;
 import com.booking.users.dtos.response.UserResponse;
-import com.booking.users.entity.UserEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -48,5 +46,4 @@ public class CustomerResponse {
     }
 
     private Date createdAt;
-
 }

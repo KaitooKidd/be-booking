@@ -1,6 +1,5 @@
 package com.booking.bookings.service.impl;
 
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -29,18 +28,6 @@ import com.booking.utils.VNPayUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.codec.binary.Hex;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.print.DocFlavor;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,7 +43,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentUrlResponse createVnpayPaymentURL(
             HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) {
         BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
-//        BookingEntity booking = new BookingEntity();
+        //        BookingEntity booking = new BookingEntity();
         String orderId = booking.getPaymentId();
         String amount = String.valueOf((long) (booking.getTotalPrice() * 100));
         String locale = paymentUrlRequest.getLocale();
@@ -73,7 +60,8 @@ public class PaymentServiceImpl implements PaymentService {
                 && StringUtils.isExist(paymentUrlRequest.getBankCode().name())) {
             vnpParamsMap.put("vnp_BankCode", paymentUrlRequest.getBankCode().name());
         }
-        String returnUrl = request.getRequestURL().toString().replace(request.getServletPath(), "/bookings/payment/return/vnpay");
+        String returnUrl =
+                request.getRequestURL().toString().replace(request.getServletPath(), "/bookings/payment/return/vnpay");
 
         vnpParamsMap.put("vnp_ReturnUrl", returnUrl);
 
@@ -114,7 +102,7 @@ public class PaymentServiceImpl implements PaymentService {
         String resultUrl = clientUrl + "/" + defaultLocale + "/book-room/result?channel=vn_pay";
         String vnpayCode = sortedParams.get("vnp_ResponseCode");
 
-        if (secureHash.equals(signed)) {
+        if (secureHash.equals(signed) && "00".equals(vnpayCode)) {
             BookingEntity updateResult = bookingService.updateBookingPaymentValue(
                     orderId, true, JsonUtils.getObject(JsonUtils.toString(params), VnpayResultInfo.class));
 

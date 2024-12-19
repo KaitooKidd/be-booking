@@ -57,6 +57,7 @@ public class HotelEntity extends SequenceBaseEntity {
     private List<ReviewEntity> reviews;
 
     @Convert(converter = GalleryItemListConverter.class)
+    @Column(name = "gallery", columnDefinition = "TEXT")
     private List<GalleryItem> gallery = new ArrayList<>();
 
     private boolean gym;
