@@ -1,5 +1,6 @@
 package com.booking.users.helper;
 
+import com.booking.users.mapper.RoleMapper;
 import org.springframework.stereotype.Component;
 
 import com.booking.users.constant.RoleConstant;
@@ -16,11 +17,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserHelper {
 
+    private final RoleMapper roleMapper;
+
     public UserResponse transformUserResponse(UserEntity userEntity, UserRequest userRequest) {
         UserResponse userResponse = UserResponse.builder()
                 .email(userEntity.getEmail())
                 .verified(userEntity.isVerified())
-                .role(userEntity.getRole().getName())
+                .roleResponse(roleMapper.toRoleResponse(userEntity.getRole()))
                 .build();
 
         if (userEntity.getRole().getName().equals(RoleConstant.ADMIN_ROLE)) {

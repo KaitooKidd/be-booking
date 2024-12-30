@@ -61,7 +61,7 @@ public class ReceptionistController {
 
     @DeleteMapping("")
     @PreAuthorize("hasAnyAuthority('admin','hotel_manager')")
-    ApiResponse<Void> deleteCustomer(@RequestParam String email) {
+    ApiResponse<Void> deleteReceptionist(@RequestParam String email) {
         receptionistService.deleteReceptionist(email);
         return ApiResponse.<Void>builder().build();
     }

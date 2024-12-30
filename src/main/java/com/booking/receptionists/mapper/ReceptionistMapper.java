@@ -13,7 +13,6 @@ import com.booking.receptionists.entity.ReceptionistEntity;
 public interface ReceptionistMapper {
     ReceptionistEntity toReceptionist(ReceptionistRequest request);
 
-    @Mapping(target = "user.role", ignore = true)
     ReceptionistResponse toReceptionistResponse(ReceptionistEntity entity);
 
     void updateReceptionist(@MappingTarget ReceptionistEntity entity, ReceptionistRequest request);

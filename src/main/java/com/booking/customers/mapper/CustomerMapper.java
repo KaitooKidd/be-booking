@@ -13,7 +13,6 @@ import com.booking.customers.entity.CustomerEntity;
 public interface CustomerMapper {
     CustomerEntity toCustomer(CustomerRequest request);
 
-    @Mapping(target = "user.role", ignore = true)
     CustomerResponse toCustomerResponse(CustomerEntity customerEntity);
 
     void updateCustomer(@MappingTarget CustomerEntity entity, CustomerRequest request);

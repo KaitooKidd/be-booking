@@ -59,7 +59,7 @@ public class BookingController {
     }
 
     @PostMapping("/payment/vnpay")
-    //    @PreAuthorize("hasAnyAuthority('customer')")
+    @PreAuthorize("hasAnyAuthority('customer')")
     PaymentUrlResponse createVnpayPaymentURL(
             HttpServletRequest request, @RequestBody CreatePaymentUrlRequest bookingRequest) throws Exception {
         return paymentService.createVnpayPaymentURL(request, bookingRequest);

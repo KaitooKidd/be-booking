@@ -1,5 +1,6 @@
 package com.booking.users.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.*;
@@ -17,7 +18,13 @@ public class UserResponse {
     @JsonProperty("isVerified")
     Boolean verified;
 
-    String role;
+    @JsonIgnore
+    RoleResponse roleResponse;
+
+    @JsonProperty("role")
+    public String getRole() {
+        return roleResponse != null ? roleResponse.getName() : null;
+    }
     String name;
     String avatar;
 }

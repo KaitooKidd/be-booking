@@ -1,5 +1,7 @@
 package com.booking.hotels.dtos.response;
 
+import com.booking.address.dto.response.AddressResponse;
+import com.booking.users.dtos.response.UserResponse;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -26,6 +28,8 @@ public class HotelManagerResponse {
     private String birthday;
     private String phone;
 
+    private AddressResponse address;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private GenderType gender;
@@ -34,4 +38,13 @@ public class HotelManagerResponse {
     public String getGenderStringName() {
         return getGender() == null ? "" : getGender().name;
     }
+
+    @JsonIgnore
+    private UserResponse user;
+
+    @JsonProperty("isVerified")
+    public Boolean getIsVerified() {
+        return user != null && user.getVerified();
+    }
+
 }
