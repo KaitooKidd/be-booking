@@ -6,12 +6,14 @@ import org.redisson.api.RBucket;
 import org.redisson.api.RKeys;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.booking.bookings.repository.BookingRepository;
 
 @Component
+@EnableScheduling
 public class BookingTimeoutScheduler {
 
     @Autowired
@@ -22,12 +24,12 @@ public class BookingTimeoutScheduler {
 
     private static final String REDIS_PREFIX = "pending_booked:";
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedDelay = 60000)
     public void checkPendingBookings() {
         RKeys keys = redissonClient.getKeys();
-        Set<String> redisKeys = (Set<String>) keys.getKeysByPattern(REDIS_PREFIX + "*");
+        Iterable<String> redisKeys = keys.getKeysByPattern(REDIS_PREFIX + "*");
 
-        if (redisKeys == null || redisKeys.isEmpty()) {
+        if (redisKeys == null) {
             return;
         }
 
@@ -35,7 +37,7 @@ public class BookingTimeoutScheduler {
             RBucket<String> bucket = redissonClient.getBucket(key);
             long ttl = bucket.remainTimeToLive();
 
-            if (ttl > 0 && ttl <= 60 * 1000) {
+            if (ttl > 0 && ttl <= 15 * 1000) {
                 String bookingId = bucket.get();
 
                 if (bookingId != null) {

@@ -42,7 +42,7 @@ public class BookingServiceImpl implements BookingService {
     private final UserService userService;
     private final HotelService hotelService;
     private final RedissonClient redissonClient;
-    private static final String REDIS_PREFIX = "pending_booked:";
+    public static final String REDIS_PREFIX = "pending_booked:";
 
     @Override
     public BookingEntity getBookingById(String id, Boolean isPaid) {
@@ -140,9 +140,10 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setPaymentId(generatePaymentId(request.getPaymentChannel(), userResponse.getEmail()));
         bookingEntity.setTimeRules(hotel.getTimeRules());
         BookingEntity entity = save(bookingEntity);
+        // save bookingId redis
         String key = REDIS_PREFIX + entity.getId();
         RBucket<String> bucket = redissonClient.getBucket(key);
-        bucket.set(entity.getId(), 1, TimeUnit.MINUTES);
+        bucket.set(entity.getId(), 15, TimeUnit.MINUTES);
         return bookingMapper.toResponse(entity);
     }
 

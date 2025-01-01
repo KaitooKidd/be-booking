@@ -2,9 +2,8 @@ package com.booking.bookings.service.impl;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,6 +11,9 @@ import javax.crypto.spec.SecretKeySpec;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Hex;
+import org.redisson.api.RBucket;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +31,16 @@ import com.booking.utils.VNPayUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import static com.booking.bookings.service.impl.BookingServiceImpl.REDIS_PREFIX;
+
 @RequiredArgsConstructor
 @Service
 @Log4j2
 public class PaymentServiceImpl implements PaymentService {
     private final BookingService bookingService;
     private final VNPAYConfig vnPayConfig;
+    @Autowired
+    private RedissonClient redissonClient;
 
     @Value("${email.client-url}")
     private String clientUrl;
@@ -55,6 +61,19 @@ public class PaymentServiceImpl implements PaymentService {
         vnpParamsMap.put("vnp_TxnRef", orderId);
         vnpParamsMap.put("vnp_Locale", locale);
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toan cho ma GD:" + orderId);
+
+        RBucket<Object> bucket = redissonClient.getBucket(REDIS_PREFIX + paymentUrlRequest.getBookingId());
+        long ttlMillis = bucket.remainTimeToLive(); // TTL in milliseconds
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        if(ttlMillis > 0) {
+            calendar.add(Calendar.MILLISECOND, (int) ttlMillis);
+        } else {
+            calendar.add(Calendar.MINUTE, 10);
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_ExpireDate = formatter.format(calendar.getTime());
+        vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
 
         if (paymentUrlRequest.getBankCode() != null
                 && StringUtils.isExist(paymentUrlRequest.getBankCode().name())) {
