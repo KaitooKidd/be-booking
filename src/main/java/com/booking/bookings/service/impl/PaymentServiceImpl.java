@@ -105,6 +105,9 @@ public class PaymentServiceImpl implements PaymentService {
         if (secureHash.equals(signed) && "00".equals(vnpayCode)) {
             BookingEntity updateResult = bookingService.updateBookingPaymentValue(
                     orderId, true, JsonUtils.getObject(JsonUtils.toString(params), VnpayResultInfo.class));
+            if (updateResult != null) {
+                bookingService.deleteBookingFromRedis(updateResult.getId());
+            }
 
             if (updateResult == null) vnpayCode = "100"; // custom: internal error, update failed
 

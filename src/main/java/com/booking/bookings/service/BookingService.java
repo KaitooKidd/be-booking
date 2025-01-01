@@ -22,5 +22,7 @@ public interface BookingService {
 
     BookingResponse createBooking(UserRequest userRequest, BookingRequest request);
 
+    public void deleteBookingFromRedis(String bookingId);
+
     List<BookingResponse> listMyBookings(UserRequest userRequest);
 }

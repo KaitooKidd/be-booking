@@ -77,7 +77,7 @@ public class FirebaseAuthServiceImpl implements FirebaseAuthService {
     public ApiResponse<Void> signUp(UserRequest userRequest) {
         UserEntity existingUser = userService.getUserByEmail(userRequest.getEmail(), null);
         if (existingUser != null) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(existingUser.getEmail(), ErrorCode.USER_EXISTED);
         }
 
         customerService.createUnverifiedCustomer(

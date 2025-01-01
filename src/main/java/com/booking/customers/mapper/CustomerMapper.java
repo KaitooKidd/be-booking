@@ -2,7 +2,6 @@ package com.booking.customers.mapper;
 
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import com.booking.customers.dtos.request.CustomerRequest;

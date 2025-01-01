@@ -1,12 +1,12 @@
 package com.booking.users.helper;
 
-import com.booking.users.mapper.RoleMapper;
 import org.springframework.stereotype.Component;
 
 import com.booking.users.constant.RoleConstant;
 import com.booking.users.dtos.request.UserRequest;
 import com.booking.users.dtos.response.UserResponse;
 import com.booking.users.entity.UserEntity;
+import com.booking.users.mapper.RoleMapper;
 import com.booking.utils.StringUtils;
 
 import lombok.RequiredArgsConstructor;

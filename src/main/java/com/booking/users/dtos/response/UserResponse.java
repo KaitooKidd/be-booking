@@ -25,6 +25,7 @@ public class UserResponse {
     public String getRole() {
         return roleResponse != null ? roleResponse.getName() : null;
     }
+
     String name;
     String avatar;
 }

@@ -1,11 +1,11 @@
 package com.booking.hotels.dtos.response;
 
-import com.booking.address.dto.response.AddressResponse;
-import com.booking.users.dtos.response.UserResponse;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
+import com.booking.address.dto.response.AddressResponse;
 import com.booking.base.enums.GenderType;
+import com.booking.users.dtos.response.UserResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,5 +46,4 @@ public class HotelManagerResponse {
     public Boolean getIsVerified() {
         return user != null && user.getVerified();
     }
-
 }

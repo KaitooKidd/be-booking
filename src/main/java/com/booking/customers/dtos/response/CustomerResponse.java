@@ -30,9 +30,11 @@ public class CustomerResponse {
     private String phone;
 
     private AddressResponse address;
+
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private GenderType gender;
+
     @JsonProperty("gender")
     public String getGenderStringName() {
         return getGender() == null ? "" : getGender().name;
@@ -40,6 +42,7 @@ public class CustomerResponse {
 
     @JsonIgnore
     private UserResponse user;
+
     @JsonProperty("isVerified")
     public Boolean getIsVerified() {
         return user != null && user.getVerified();
