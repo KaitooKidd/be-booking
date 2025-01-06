@@ -3,10 +3,7 @@ package com.booking.bookings.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import com.booking.auth.exception.AppException;
@@ -33,16 +30,17 @@ import com.booking.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@RequiredArgsConstructor
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+    private static final String REDIS_PREFIX = "pending_booked";
+
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final UserService userService;
     private final HotelService hotelService;
-    private final RedissonClient redissonClient;
-    public static final String REDIS_PREFIX = "pending_booked:";
+    private final PendingBookingService pendingBookingService;
 
     @Override
     public BookingEntity getBookingById(String id, Boolean isPaid) {
@@ -141,16 +139,8 @@ public class BookingServiceImpl implements BookingService {
         bookingEntity.setTimeRules(hotel.getTimeRules());
         BookingEntity entity = save(bookingEntity);
         // save bookingId redis
-        String key = REDIS_PREFIX + entity.getId();
-        RBucket<String> bucket = redissonClient.getBucket(key);
-        bucket.set(entity.getId(), 15, TimeUnit.MINUTES);
+        pendingBookingService.assignPending(entity.getId());
         return bookingMapper.toResponse(entity);
-    }
-
-    public void deleteBookingFromRedis(String bookingId) {
-        String key = REDIS_PREFIX + bookingId;
-        RBucket<String> bucket = redissonClient.getBucket(key);
-        bucket.delete();
     }
 
     @Override

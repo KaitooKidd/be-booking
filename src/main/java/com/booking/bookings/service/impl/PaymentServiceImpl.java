@@ -11,9 +11,6 @@ import javax.crypto.spec.SecretKeySpec;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Hex;
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,16 +28,13 @@ import com.booking.utils.VNPayUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-import static com.booking.bookings.service.impl.BookingServiceImpl.REDIS_PREFIX;
-
 @RequiredArgsConstructor
 @Service
 @Log4j2
 public class PaymentServiceImpl implements PaymentService {
     private final BookingService bookingService;
     private final VNPAYConfig vnPayConfig;
-    @Autowired
-    private RedissonClient redissonClient;
+    private final PendingBookingService pendingBookingService;
 
     @Value("${email.client-url}")
     private String clientUrl;
@@ -62,18 +56,17 @@ public class PaymentServiceImpl implements PaymentService {
         vnpParamsMap.put("vnp_Locale", locale);
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toan cho ma GD:" + orderId);
 
-        RBucket<Object> bucket = redissonClient.getBucket(REDIS_PREFIX + paymentUrlRequest.getBookingId());
-        long ttlMillis = bucket.remainTimeToLive(); // TTL in milliseconds
-
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        if(ttlMillis > 0) {
-            calendar.add(Calendar.MILLISECOND, (int) ttlMillis);
-        } else {
+
+        Long ttlMillis = pendingBookingService.remainTime(paymentUrlRequest.getBookingId()); // TTL in milliseconds
+        if (ttlMillis == null) {
             calendar.add(Calendar.MINUTE, 10);
+        } else {
+            calendar.add(Calendar.MILLISECOND, Math.toIntExact(ttlMillis));
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_ExpireDate = formatter.format(calendar.getTime());
-        vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
+        String vnpExpireDate = formatter.format(calendar.getTime());
+        vnpParamsMap.put("vnp_ExpireDate", vnpExpireDate);
 
         if (paymentUrlRequest.getBankCode() != null
                 && StringUtils.isExist(paymentUrlRequest.getBankCode().name())) {
@@ -122,10 +115,11 @@ public class PaymentServiceImpl implements PaymentService {
         String vnpayCode = sortedParams.get("vnp_ResponseCode");
 
         if (secureHash.equals(signed) && "00".equals(vnpayCode)) {
+
             BookingEntity updateResult = bookingService.updateBookingPaymentValue(
                     orderId, true, JsonUtils.getObject(JsonUtils.toString(params), VnpayResultInfo.class));
-            if (updateResult != null) {
-                bookingService.deleteBookingFromRedis(updateResult.getId());
+            if (updateResult != null && !pendingBookingService.tryPayPending(updateResult.getId())) {
+                return Collections.singletonMap("url", resultUrl + "&code=97");
             }
 
             if (updateResult == null) vnpayCode = "100"; // custom: internal error, update failed
