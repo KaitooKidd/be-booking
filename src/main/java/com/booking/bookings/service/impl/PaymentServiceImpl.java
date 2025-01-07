@@ -59,10 +59,10 @@ public class PaymentServiceImpl implements PaymentService {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
         Long ttlMillis = pendingBookingService.remainTime(paymentUrlRequest.getBookingId()); // TTL in milliseconds
-        if (ttlMillis == null) {
-            calendar.add(Calendar.MINUTE, 10);
+        if (ttlMillis == null || ttlMillis > 0) {
+            calendar.add(Calendar.MILLISECOND, -1);
         } else {
-            calendar.add(Calendar.MILLISECOND, Math.toIntExact(ttlMillis));
+            calendar.add(Calendar.MILLISECOND, Math.toIntExact(Math.abs(ttlMillis)));
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnpExpireDate = formatter.format(calendar.getTime());

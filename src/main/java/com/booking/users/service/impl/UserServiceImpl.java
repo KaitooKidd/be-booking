@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         if (userEntity == null) {
             String message = "User " + userRequest.getEmail() + " not found";
             log.error(message);
-            throw new RuntimeException(message);
+            throw new AppException(userRequest.getEmail(), ErrorCode.USER_NOT_EXISTED);
         }
         return userHelper.transformUserResponse(userEntity, userRequest);
     }

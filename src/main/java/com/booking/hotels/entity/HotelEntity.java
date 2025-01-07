@@ -35,9 +35,11 @@ public class HotelEntity extends SequenceBaseEntity {
     private String email;
 
     private String name;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
     @Column(name = "image_key")

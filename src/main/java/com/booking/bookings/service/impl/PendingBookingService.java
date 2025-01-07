@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import com.booking.bookings.repository.BookingRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
+@EnableScheduling
 @Slf4j
 public class PendingBookingService {
     private static final String REDIS_PREFIX = "pending_booked";
@@ -36,9 +38,10 @@ public class PendingBookingService {
                 log.info("Request of this key has been processed successfully, continuing!!!");
                 return null;
             }
+            // case: còn < 60s ng dùng thanh toán
             long ttl = System.currentTimeMillis()
                     - timeMillis
-                    - Duration.ofMinutes(15).toMillis();
+                    - Duration.ofMinutes(16).toMillis();
 
             if (ttl > 0) {
                 bookingRepository.deleteById(k);

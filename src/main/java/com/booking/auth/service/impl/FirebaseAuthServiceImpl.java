@@ -70,7 +70,12 @@ public class FirebaseAuthServiceImpl implements FirebaseAuthService {
 
     @Override
     public UserResponse signIn(UserRequest userRequest) {
-        return userService.getUserInfo(userRequest, null);
+        try {
+            return userService.getUserInfo(userRequest, null);
+        } catch (AppException e) {
+            userService.deleteFirebaseUser(userRequest.getEmail());
+            throw new AppException(userRequest.getEmail(), ErrorCode.USER_NOT_EXISTED);
+        }
     }
 
     @Override

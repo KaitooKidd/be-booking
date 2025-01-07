@@ -1,5 +1,6 @@
 package com.booking.auth.exception;
 
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
@@ -12,7 +13,7 @@ public enum ErrorCode {
     USER_EXISTED(1002, "User {email} is existed", HttpStatus.BAD_REQUEST),
     USERNAME_INVALID(1003, "Username must be at least {min} characters", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1004, "Password must be at least {min} characters", HttpStatus.BAD_REQUEST),
-    USER_NOT_EXISTED(1005, "UserEntity not existed", HttpStatus.NOT_FOUND),
+    USER_NOT_EXISTED(1005, "User {email} not existed", HttpStatus.NOT_FOUND),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
@@ -28,6 +29,11 @@ public enum ErrorCode {
     }
 
     private final int code;
-    private final String message;
+    private String message;
     private final HttpStatusCode statusCode;
+
+    public String formatMessage(String value) {
+        message = message.replaceFirst("\\{[^}]*\\}", value);
+        return message;
+    }
 }

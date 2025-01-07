@@ -80,7 +80,7 @@ public class BookingEntity extends UUIDEntity {
     @Column(name = "payment_id", unique = true)
     private String paymentId;
 
-    @Column(name = "payment_info")
+    @Column(name = "payment_info", columnDefinition = "TEXT")
     @Convert(converter = PaymentInfoConverter.class)
     private transient PaymentInfo paymentInfo;
 

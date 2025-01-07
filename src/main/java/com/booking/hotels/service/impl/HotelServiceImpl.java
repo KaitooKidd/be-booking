@@ -83,7 +83,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelEntity getHotelById(Long id) {
         HotelEntity hotelEntity = hotelRepository.findById(id).orElse(null);
         if (hotelEntity == null) {
-            throw new AppException("Hotel not found", ErrorCode.USER_NOT_EXISTED);
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         return hotelEntity;
     }
@@ -92,7 +92,7 @@ public class HotelServiceImpl implements HotelService {
     public HotelEntity getHotelByEmail(String email) {
         HotelEntity hotelEntity = hotelRepository.findByEmail(email);
         if (hotelEntity == null) {
-            throw new AppException("Hotel not found", ErrorCode.USER_NOT_EXISTED);
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         return hotelEntity;
     }

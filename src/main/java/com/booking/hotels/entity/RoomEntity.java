@@ -24,9 +24,11 @@ import lombok.*;
 @SuppressWarnings("all")
 public class RoomEntity extends SequenceBaseEntity {
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
     @Column(name = "image_key")

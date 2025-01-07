@@ -88,17 +88,19 @@ public class ReceptionistServiceImpl implements ReceptionistService {
     public ReceptionistEntity createReceptionist(UserRequest userRequest, ReceptionistRequest request) {
 
         UserEntity userEntity = userService.getUserByEmail(userRequest.getEmail(), null);
-        Long id = userEntity.getHotelManager().getHotel().getId();
-        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
-                && !Objects.equals(id, request.getHotelId())) {
-            log.error("Hotel Manager can create receptionist.");
-            throw new AppException(ErrorCode.UNAUTHORIZED);
+
+        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)) {
+            Long id = userEntity.getHotelManager().getHotel().getId();
+            if (!Objects.equals(id, request.getHotelId())) {
+                log.error("Hotel Manager can't create receptionist.");
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
         }
 
         UserEntity user = userService.createUser(UserCreationRequest.builder()
                 .email(request.getEmail())
                 .roleName(RoleConstant.RECEPTIONIST_ROLE)
-                .isVerified(false)
+                .isVerified(true)
                 .shouldCreateFirebaseUser(true)
                 .build());
 
@@ -124,19 +126,20 @@ public class ReceptionistServiceImpl implements ReceptionistService {
         }
 
         UserEntity userEntity = userService.getUserByEmail(userRequest.getEmail(), null);
-        Long id = userEntity.getHotelManager().getHotel().getId();
-        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)
-                && !Objects.equals(id, request.getHotelId())) {
-            log.error("Hotel Manager can create receptionist.");
-            throw new AppException(ErrorCode.UNAUTHORIZED);
+        if (userEntity.getRole().getName().equals(RoleConstant.HOTEL_MANAGER_ROLE)) {
+            Long id = userEntity.getHotelManager().getHotel().getId();
+            if (!Objects.equals(id, request.getHotelId())) {
+                log.error("Hotel Manager can't update receptionist.");
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
         }
 
         receptionistMapper.updateReceptionist(receptionist, request);
         return save(receptionist);
     }
 
-    @Override
     public void deleteReceptionist(String email) {
         receptionistRepository.deleteAllByEmails(new ArrayList<>(List.of(email)));
+        userService.deleteUser(email);
     }
 }

@@ -8,17 +8,14 @@ public class AppException extends RuntimeException {
     }
 
     public AppException(String message, ErrorCode errorCode) {
-        super(message);
+        super(errorCode.formatMessage(message));
         this.errorCode = errorCode;
     }
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
     public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(ErrorCode errorCode) {
-        this.errorCode = errorCode;
-    }
 }

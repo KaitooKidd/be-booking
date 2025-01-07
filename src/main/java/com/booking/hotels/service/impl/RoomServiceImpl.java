@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
     public RoomEntity getById(Long id) {
         Optional<RoomEntity> roomEntity = roomRepository.findById(id);
         if (roomEntity.isEmpty()) {
-            throw new AppException("Room not found", ErrorCode.USER_NOT_EXISTED);
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
         return roomEntity.get();
     }

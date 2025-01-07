@@ -21,6 +21,7 @@ public class RoleEntity extends SequenceBaseEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
