@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.booking.auth.dto.response.ApiResponse;
 import com.booking.bookings.dtos.request.BookingRequest;
 import com.booking.bookings.dtos.request.CreatePaymentUrlRequest;
+import com.booking.bookings.dtos.request.RefundPaymentVnPayRequest;
 import com.booking.bookings.dtos.request.UpdateBookingStatusRequest;
 import com.booking.bookings.dtos.response.BookingResponse;
 import com.booking.bookings.dtos.response.PaymentUrlResponse;
@@ -63,6 +64,13 @@ public class BookingController {
     PaymentUrlResponse createVnpayPaymentURL(
             HttpServletRequest request, @RequestBody CreatePaymentUrlRequest bookingRequest) throws Exception {
         return paymentService.createVnpayPaymentURL(request, bookingRequest);
+    }
+
+    @PostMapping("/payment/vnpay/refund")
+    @PreAuthorize("hasAnyAuthority('customer')")
+    String refundVnpayPay(HttpServletRequest request, @RequestBody RefundPaymentVnPayRequest refundRequest)
+            throws Exception {
+        return paymentService.refundVNPAY(request, refundRequest);
     }
 
     @GetMapping("/payment/return/vnpay")

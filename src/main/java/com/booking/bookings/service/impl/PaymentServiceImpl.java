@@ -1,7 +1,11 @@
 package com.booking.bookings.service.impl;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.booking.bookings.configs.VNPAYConfig;
 import com.booking.bookings.dtos.VnpayResultInfo;
 import com.booking.bookings.dtos.request.CreatePaymentUrlRequest;
+import com.booking.bookings.dtos.request.RefundPaymentVnPayRequest;
 import com.booking.bookings.dtos.response.PaymentUrlResponse;
 import com.booking.bookings.entity.BookingEntity;
 import com.booking.bookings.service.BookingService;
@@ -32,6 +37,8 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Log4j2
 public class PaymentServiceImpl implements PaymentService {
+
+    private static final String VNP_API_URL = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
     private final BookingService bookingService;
     private final VNPAYConfig vnPayConfig;
     private final PendingBookingService pendingBookingService;
@@ -43,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentUrlResponse createVnpayPaymentURL(
             HttpServletRequest request, CreatePaymentUrlRequest paymentUrlRequest) {
         BookingEntity booking = bookingService.getBookingById(paymentUrlRequest.getBookingId(), null);
-        //        BookingEntity booking = new BookingEntity();
+
         String orderId = booking.getPaymentId();
         String amount = String.valueOf((long) (booking.getTotalPrice() * 100));
         String locale = paymentUrlRequest.getLocale();
@@ -59,10 +66,10 @@ public class PaymentServiceImpl implements PaymentService {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
         Long ttlMillis = pendingBookingService.remainTime(paymentUrlRequest.getBookingId()); // TTL in milliseconds
-        if (ttlMillis == null) {
-            calendar.add(Calendar.MINUTE, 10);
+        if (ttlMillis == null || ttlMillis > 0) {
+            calendar.add(Calendar.MILLISECOND, -1);
         } else {
-            calendar.add(Calendar.MILLISECOND, Math.toIntExact(ttlMillis));
+            calendar.add(Calendar.MILLISECOND, Math.toIntExact(Math.abs(ttlMillis)));
         }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnpExpireDate = formatter.format(calendar.getTime());
@@ -127,6 +134,92 @@ public class PaymentServiceImpl implements PaymentService {
             return Collections.singletonMap("url", resultUrl + "&code=" + vnpayCode);
         } else {
             return Collections.singletonMap("url", resultUrl + "&code=97");
+        }
+    }
+
+    public String refundVNPAY(HttpServletRequest request, RefundPaymentVnPayRequest refundRequest) throws IOException {
+        return sendRefundRequest(createRequestRefundVNPay(request, refundRequest.getBookingId()));
+    }
+
+    private Map<String, String> createRequestRefundVNPay(HttpServletRequest request, String bookingId) {
+        BookingEntity booking = bookingService.getBookingById(bookingId, true);
+        VnpayResultInfo paymentInfo = (VnpayResultInfo) booking.getPaymentInfo();
+        String orderId = booking.getPaymentId();
+        Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
+        vnpParamsMap.put("vnp_RequestId", UUID.randomUUID().toString());
+        vnpParamsMap.put("vnp_Command", "refund");
+        vnpParamsMap.put("vnp_TransactionType", "02");
+        vnpParamsMap.put("vnp_TxnRef", orderId);
+        vnpParamsMap.put("vnp_Amount", String.valueOf((long) (booking.getTotalPrice() * 100)));
+        vnpParamsMap.put("vnp_OrderInfo", "Hoan tien cho ma GD:" + orderId);
+        vnpParamsMap.put("vnp_TransactionNo", paymentInfo.getVnp_TransactionNo());
+        vnpParamsMap.put("vnp_TransactionDate", vnpParamsMap.get("vnp_CreateDate"));
+        vnpParamsMap.put("vnp_CreateBy", booking.getCustomerName());
+        vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
+
+        String data = String.join(
+                "|",
+                vnpParamsMap.get("vnp_RequestId"),
+                vnpParamsMap.get("vnp_Version"),
+                vnpParamsMap.get("vnp_Command"),
+                vnpParamsMap.get("vnp_TmnCode"),
+                vnpParamsMap.get("vnp_TxnRef"),
+                vnpParamsMap.get(" vnp_TransactionDate"),
+                vnpParamsMap.get("vnp_CreateDate"),
+                vnpParamsMap.get("vnp_IpAddr"),
+                vnpParamsMap.get("vnp_OrderInfo"));
+
+        String vnpSecureHash = VNPayUtils.hmacSHA512(vnPayConfig.getSecretKey(), data);
+        vnpParamsMap.put("vnp_SecureHash", vnpSecureHash);
+        //        vnpParamsMap.put("vnp_SecureHash", paymentInfo.getVnp_SecureHash());
+
+        vnpParamsMap.remove("vnp_CurrCode");
+        vnpParamsMap.remove("vnp_OrderType");
+        return vnpParamsMap;
+    }
+
+    private String sendRefundRequest(Map<String, String> postData) throws IOException {
+        URL url = new URL(VNP_API_URL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        // Gửi dữ liệu JSON
+        try (OutputStream os = conn.getOutputStream()) {
+            byte[] input = JsonUtils.toString(postData).getBytes(StandardCharsets.UTF_8);
+            os.write(input, 0, input.length);
+        }
+
+        // Đọc phản hồi
+        int responseCode = conn.getResponseCode();
+        InputStream inputStream =
+                (responseCode >= 200 && responseCode < 300) ? conn.getInputStream() : conn.getErrorStream();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        return response.toString();
+    }
+
+    public String hmacSHA256(String secretKey, String data) {
+        try {
+
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest((data + secretKey).getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Error while hashing: " + e.getMessage());
         }
     }
 }
